@@ -32,3 +32,4 @@ out
 log
 *.log
 *.html
+.idea/
