@@ -1,0 +1,2157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="aaa">
+        <df name="doc">
+        </df>
+        <in>aaa.c</in>
+        <in>aaa.h</in>
+        <in>aaa_avp.h</in>
+      </df>
+      <df name="cachedb">
+        <df name="example">
+          <in>example_cachedb.c</in>
+        </df>
+        <in>cachedb.c</in>
+        <in>cachedb.h</in>
+        <in>cachedb_cap.h</in>
+        <in>cachedb_con.h</in>
+        <in>cachedb_id.c</in>
+        <in>cachedb_id.h</in>
+        <in>cachedb_pool.c</in>
+        <in>cachedb_pool.h</in>
+      </df>
+      <df name="db">
+        <df name="doc">
+        </df>
+        <df name="example">
+          <in>dbexample.c</in>
+        </df>
+        <df name="schema">
+        </df>
+        <in>db.c</in>
+        <in>db.h</in>
+        <in>db_cap.h</in>
+        <in>db_con.h</in>
+        <in>db_id.c</in>
+        <in>db_id.h</in>
+        <in>db_insertq.c</in>
+        <in>db_insertq.h</in>
+        <in>db_key.h</in>
+        <in>db_op.h</in>
+        <in>db_pool.c</in>
+        <in>db_pool.h</in>
+        <in>db_ps.h</in>
+        <in>db_query.c</in>
+        <in>db_query.h</in>
+        <in>db_res.c</in>
+        <in>db_res.h</in>
+        <in>db_row.c</in>
+        <in>db_row.h</in>
+        <in>db_ut.c</in>
+        <in>db_ut.h</in>
+        <in>db_val.h</in>
+      </df>
+      <df name="doc">
+        <df name="dbschema">
+          <df name="dtd">
+          </df>
+          <df name="xsl">
+          </df>
+        </df>
+        <df name="doxygen">
+        </df>
+      </df>
+      <df name="etc">
+        <df name="tls">
+          <df name="rootCA">
+            <df name="certs">
+            </df>
+            <df name="private">
+            </df>
+          </df>
+          <df name="user">
+          </df>
+        </df>
+      </df>
+      <df name="evi">
+        <in>event_interface.c</in>
+        <in>event_interface.h</in>
+        <in>evi.h</in>
+        <in>evi_core.c</in>
+        <in>evi_core.h</in>
+        <in>evi_modules.h</in>
+        <in>evi_params.c</in>
+        <in>evi_params.h</in>
+        <in>evi_transport.c</in>
+        <in>evi_transport.h</in>
+      </df>
+      <df name="examples">
+        <df name="web_im">
+        </df>
+      </df>
+      <df name="mem">
+        <in>f_malloc.c</in>
+        <in>f_malloc.h</in>
+        <in>hp_malloc.c</in>
+        <in>hp_malloc.h</in>
+        <in>hp_malloc_stats.c</in>
+        <in>hp_malloc_stats.h</in>
+        <in>mem.c</in>
+        <in>mem.h</in>
+        <in>meminfo.h</in>
+        <in>memtest.c</in>
+        <in>q_malloc.c</in>
+        <in>q_malloc.h</in>
+        <in>shm_mem.c</in>
+        <in>shm_mem.h</in>
+        <in>vq_malloc.c</in>
+        <in>vq_malloc.h</in>
+      </df>
+      <df name="menuconfig">
+        <df name="configs">
+        </df>
+        <in>cfg.c</in>
+        <in>cfg.h</in>
+        <in>commands.c</in>
+        <in>commands.h</in>
+        <in>curses.c</in>
+        <in>curses.h</in>
+        <in>items.c</in>
+        <in>items.h</in>
+        <in>main.c</in>
+        <in>main.h</in>
+        <in>menus.c</in>
+        <in>menus.h</in>
+        <in>parser.c</in>
+        <in>parser.h</in>
+      </df>
+      <df name="mi">
+        <in>attr.c</in>
+        <in>attr.h</in>
+        <in>fmt.c</in>
+        <in>fmt.h</in>
+        <in>mi.c</in>
+        <in>mi.h</in>
+        <in>mi_core.c</in>
+        <in>mi_core.h</in>
+        <in>tree.c</in>
+        <in>tree.h</in>
+      </df>
+      <df name="modules">
+        <df name="aaa_radius">
+          <df name="doc">
+          </df>
+          <in>aaa_radius.c</in>
+          <in>rad.c</in>
+          <in>rad.h</in>
+        </df>
+        <df name="acc">
+          <df name="doc">
+          </df>
+          <df name="etc">
+          </df>
+          <in>acc.c</in>
+          <in>acc.h</in>
+          <in>acc_extra.c</in>
+          <in>acc_extra.h</in>
+          <in>acc_logic.c</in>
+          <in>acc_logic.h</in>
+          <in>acc_mod.c</in>
+          <in>acc_mod.h</in>
+          <in>diam_avp.c</in>
+          <in>diam_dict.h</in>
+          <in>diam_message.c</in>
+          <in>diam_message.h</in>
+          <in>diam_tcp.c</in>
+          <in>diam_tcp.h</in>
+        </df>
+        <df name="alias_db">
+          <df name="doc">
+          </df>
+          <in>alias_db.c</in>
+          <in>alias_db.h</in>
+          <in>alookup.c</in>
+          <in>alookup.h</in>
+        </df>
+        <df name="auth">
+          <df name="doc">
+          </df>
+          <in>api.c</in>
+          <in>api.h</in>
+          <in>auth_mod.c</in>
+          <in>auth_mod.h</in>
+          <in>challenge.c</in>
+          <in>challenge.h</in>
+          <in>common.c</in>
+          <in>common.h</in>
+          <in>index.c</in>
+          <in>index.h</in>
+          <in>nonce.c</in>
+          <in>nonce.h</in>
+          <in>rfc2617.c</in>
+          <in>rfc2617.h</in>
+          <in>rpid.c</in>
+          <in>rpid.h</in>
+        </df>
+        <df name="auth_aaa">
+          <df name="doc">
+          </df>
+          <in>authaaa_mod.c</in>
+          <in>authaaa_mod.h</in>
+          <in>authorize.c</in>
+          <in>authorize.h</in>
+          <in>sterman.c</in>
+          <in>sterman.h</in>
+        </df>
+        <df name="auth_db">
+          <df name="doc">
+          </df>
+          <in>aaa_avps.h</in>
+          <in>authdb_mod.c</in>
+          <in>authdb_mod.h</in>
+          <in>authorize.c</in>
+          <in>authorize.h</in>
+        </df>
+        <df name="auth_diameter">
+          <df name="doc">
+          </df>
+          <in>auth_diameter.c</in>
+          <in>auth_diameter.h</in>
+          <in>authorize.c</in>
+          <in>authorize.h</in>
+          <in>avp.c</in>
+          <in>defs.h</in>
+          <in>diameter_msg.h</in>
+          <in>message.c</in>
+          <in>tcp_comm.c</in>
+          <in>tcp_comm.h</in>
+          <in>user_in.c</in>
+        </df>
+        <df name="avpops">
+          <df name="doc">
+          </df>
+          <in>avpops.c</in>
+          <in>avpops_db.c</in>
+          <in>avpops_db.h</in>
+          <in>avpops_impl.c</in>
+          <in>avpops_impl.h</in>
+          <in>avpops_parse.c</in>
+          <in>avpops_parse.h</in>
+        </df>
+        <df name="b2b_entities">
+          <df name="doc">
+          </df>
+          <in>b2b_common.h</in>
+          <in>b2b_entities.c</in>
+          <in>b2b_entities.h</in>
+          <in>b2be_db.c</in>
+          <in>b2be_db.h</in>
+          <in>client.c</in>
+          <in>client.h</in>
+          <in>dlg.c</in>
+          <in>dlg.h</in>
+          <in>server.c</in>
+          <in>server.h</in>
+        </df>
+        <df name="b2b_logic">
+          <df name="doc">
+          </df>
+          <in>b2b_load.h</in>
+          <in>b2b_logic.c</in>
+          <in>b2b_logic.h</in>
+          <in>b2bl_db.c</in>
+          <in>b2bl_db.h</in>
+          <in>logic.c</in>
+          <in>pidf.c</in>
+          <in>pidf.h</in>
+          <in>records.c</in>
+          <in>records.h</in>
+        </df>
+        <df name="b2b_sca">
+          <df name="doc">
+          </df>
+          <in>b2b_sca.c</in>
+          <in>sca_db_handler.c</in>
+          <in>sca_db_handler.h</in>
+          <in>sca_logic.c</in>
+          <in>sca_logic.h</in>
+          <in>sca_records.c</in>
+          <in>sca_records.h</in>
+        </df>
+        <df name="benchmark">
+          <df name="doc">
+          </df>
+          <in>benchmark.c</in>
+          <in>benchmark.h</in>
+          <in>benchmark_api.h</in>
+        </df>
+        <df name="cachedb_cassandra">
+          <df name="doc">
+          </df>
+          <in>Cassandra.cpp</in>
+          <in>Cassandra.h</in>
+          <in>cachedb_cassandra.c</in>
+          <in>cachedb_cassandra.h</in>
+          <in>cachedb_cassandra_dbase.cpp</in>
+          <in>cachedb_cassandra_dbase.h</in>
+          <in>cachedb_cassandra_lib.h</in>
+          <in>cassandra_constants.cpp</in>
+          <in>cassandra_constants.h</in>
+          <in>cassandra_types.cpp</in>
+          <in>cassandra_types.h</in>
+        </df>
+        <df name="cachedb_couchbase">
+          <df name="doc">
+          </df>
+          <in>cachedb_couchbase.c</in>
+          <in>cachedb_couchbase_dbase.c</in>
+          <in>cachedb_couchbase_dbase.h</in>
+        </df>
+        <df name="cachedb_local">
+          <df name="doc">
+          </df>
+          <in>cachedb_local.c</in>
+          <in>cachedb_local.h</in>
+          <in>hash.c</in>
+          <in>hash.h</in>
+        </df>
+        <df name="cachedb_memcached">
+          <df name="doc">
+          </df>
+          <in>cachedb_memcached.c</in>
+          <in>cachedb_memcached.h</in>
+        </df>
+        <df name="cachedb_mongodb">
+          <df name="doc">
+          </df>
+          <in>cachedb_mongodb.c</in>
+          <in>cachedb_mongodb_dbase.c</in>
+          <in>cachedb_mongodb_dbase.h</in>
+          <in>cachedb_mongodb_json.c</in>
+          <in>cachedb_mongodb_json.h</in>
+        </df>
+        <df name="cachedb_redis">
+          <df name="doc">
+          </df>
+          <in>cachedb_redis.c</in>
+          <in>cachedb_redis_dbase.c</in>
+          <in>cachedb_redis_dbase.h</in>
+          <in>cachedb_redis_utils.c</in>
+          <in>cachedb_redis_utils.h</in>
+        </df>
+        <df name="cachedb_sql">
+          <df name="doc">
+          </df>
+          <in>cachedb_sql.c</in>
+        </df>
+        <df name="call_center">
+          <df name="doc">
+          </df>
+          <in>call_center.c</in>
+          <in>cc_data.c</in>
+          <in>cc_data.h</in>
+          <in>cc_db.c</in>
+          <in>cc_db.h</in>
+          <in>cc_queue.c</in>
+          <in>cc_queue.h</in>
+        </df>
+        <df name="call_control">
+          <df name="doc">
+          </df>
+          <in>call_control.c</in>
+        </df>
+        <df name="carrierroute">
+          <df name="doc">
+          </df>
+          <in>carrier_tree.c</in>
+          <in>carrier_tree.h</in>
+          <in>carrierroute.c</in>
+          <in>carrierroute.h</in>
+          <in>load_data.c</in>
+          <in>load_data.h</in>
+          <in>route.h</in>
+          <in>route_config.c</in>
+          <in>route_config.h</in>
+          <in>route_db.c</in>
+          <in>route_db.h</in>
+          <in>route_fifo.c</in>
+          <in>route_fifo.h</in>
+          <in>route_func.c</in>
+          <in>route_func.h</in>
+          <in>route_rule.c</in>
+          <in>route_rule.h</in>
+          <in>route_tree.c</in>
+          <in>route_tree.h</in>
+        </df>
+        <df name="cfgutils">
+          <df name="doc">
+          </df>
+          <in>cfgutils.c</in>
+          <in>env_var.c</in>
+          <in>env_var.h</in>
+          <in>script_locks.c</in>
+          <in>script_locks.h</in>
+          <in>shvar.c</in>
+          <in>shvar.h</in>
+        </df>
+        <df name="closeddial">
+          <df name="doc">
+          </df>
+          <in>cdlookup.c</in>
+          <in>cdlookup.h</in>
+          <in>closeddial.c</in>
+          <in>closeddial.h</in>
+        </df>
+        <df name="cpl-c">
+          <df name="doc">
+          </df>
+          <in>CPL_tree.h</in>
+          <in>cpl.c</in>
+          <in>cpl_db.c</in>
+          <in>cpl_db.h</in>
+          <in>cpl_env.h</in>
+          <in>cpl_loader.c</in>
+          <in>cpl_loader.h</in>
+          <in>cpl_log.c</in>
+          <in>cpl_log.h</in>
+          <in>cpl_nonsig.c</in>
+          <in>cpl_nonsig.h</in>
+          <in>cpl_parser.c</in>
+          <in>cpl_parser.h</in>
+          <in>cpl_proxy.h</in>
+          <in>cpl_run.c</in>
+          <in>cpl_run.h</in>
+          <in>cpl_sig.c</in>
+          <in>cpl_sig.h</in>
+          <in>cpl_switches.h</in>
+          <in>cpl_utils.h</in>
+          <in>loc_set.h</in>
+          <in>sub_list.c</in>
+          <in>sub_list.h</in>
+        </df>
+        <df name="db_berkeley">
+          <df name="doc">
+          </df>
+          <in>bdb_lib.c</in>
+          <in>bdb_lib.h</in>
+          <in>bdb_mi.c</in>
+          <in>bdb_mi.h</in>
+          <in>bdb_res.c</in>
+          <in>bdb_res.h</in>
+          <in>bdb_util.c</in>
+          <in>bdb_util.h</in>
+          <in>bdb_val.c</in>
+          <in>bdb_val.h</in>
+          <in>db_berkeley.c</in>
+          <in>db_berkeley.h</in>
+        </df>
+        <df name="db_cachedb">
+          <df name="doc">
+          </df>
+          <in>db_cachedb.c</in>
+          <in>dbase.c</in>
+          <in>dbase.h</in>
+        </df>
+        <df name="db_flatstore">
+          <df name="doc">
+          </df>
+          <in>flat_con.c</in>
+          <in>flat_con.h</in>
+          <in>flat_id.c</in>
+          <in>flat_id.h</in>
+          <in>flat_mi.c</in>
+          <in>flat_mi.h</in>
+          <in>flat_pool.c</in>
+          <in>flat_pool.h</in>
+          <in>flatstore.c</in>
+          <in>flatstore.h</in>
+          <in>flatstore_mod.c</in>
+          <in>flatstore_mod.h</in>
+        </df>
+        <df name="db_http">
+          <df name="doc">
+          </df>
+          <in>db_http.c</in>
+          <in>db_http.h</in>
+          <in>http_dbase.c</in>
+          <in>http_dbase.h</in>
+        </df>
+        <df name="db_mysql">
+          <df name="doc">
+          </df>
+          <in>db_mysql.c</in>
+          <in>db_mysql.h</in>
+          <in>dbase.c</in>
+          <in>dbase.h</in>
+          <in>my_con.c</in>
+          <in>my_con.h</in>
+          <in>res.c</in>
+          <in>res.h</in>
+          <in>row.c</in>
+          <in>row.h</in>
+          <in>val.c</in>
+          <in>val.h</in>
+        </df>
+        <df name="db_oracle">
+          <df name="doc">
+          </df>
+          <in>asynch.c</in>
+          <in>asynch.h</in>
+          <in>db_oracle.c</in>
+          <in>dbase.c</in>
+          <in>dbase.h</in>
+          <in>ora_con.c</in>
+          <in>ora_con.h</in>
+          <in>res.c</in>
+          <in>res.h</in>
+          <in>val.c</in>
+          <in>val.h</in>
+        </df>
+        <df name="db_perlvdb">
+          <df name="doc">
+            <df name="samples">
+            </df>
+          </df>
+          <in>perlvdb.c</in>
+          <in>perlvdb.h</in>
+          <in>perlvdb_conv.c</in>
+          <in>perlvdb_conv.h</in>
+          <in>perlvdb_oohelpers.c</in>
+          <in>perlvdb_oohelpers.h</in>
+          <in>perlvdbfunc.c</in>
+          <in>perlvdbfunc.h</in>
+        </df>
+        <df name="db_postgres">
+          <df name="doc">
+          </df>
+          <in>db_postgres.c</in>
+          <in>dbase.c</in>
+          <in>dbase.h</in>
+          <in>pg_con.c</in>
+          <in>pg_con.h</in>
+          <in>pg_type.h</in>
+          <in>res.c</in>
+          <in>res.h</in>
+          <in>val.c</in>
+          <in>val.h</in>
+        </df>
+        <df name="db_text">
+          <df name="doc">
+          </df>
+          <in>dbt_api.c</in>
+          <in>dbt_api.h</in>
+          <in>dbt_base.c</in>
+          <in>dbt_file.c</in>
+          <in>dbt_lib.c</in>
+          <in>dbt_lib.h</in>
+          <in>dbt_res.c</in>
+          <in>dbt_res.h</in>
+          <in>dbt_tb.c</in>
+          <in>dbt_util.c</in>
+          <in>dbt_util.h</in>
+          <in>dbtext.c</in>
+          <in>dbtext.h</in>
+        </df>
+        <df name="db_unixodbc">
+          <df name="doc">
+          </df>
+          <in>con.c</in>
+          <in>con.h</in>
+          <in>db_unixodbc.c</in>
+          <in>db_unixodbc.h</in>
+          <in>dbase.c</in>
+          <in>dbase.h</in>
+          <in>list.c</in>
+          <in>list.h</in>
+          <in>res.c</in>
+          <in>res.h</in>
+          <in>row.c</in>
+          <in>row.h</in>
+          <in>val.c</in>
+          <in>val.h</in>
+        </df>
+        <df name="db_virtual">
+          <df name="doc">
+          </df>
+          <in>db_virtual.c</in>
+          <in>db_virtual.h</in>
+          <in>dbase.c</in>
+          <in>dbase.h</in>
+        </df>
+        <df name="dialog">
+          <df name="doc">
+          </df>
+          <in>dialog.c</in>
+          <in>dlg_cb.c</in>
+          <in>dlg_cb.h</in>
+          <in>dlg_db_handler.c</in>
+          <in>dlg_db_handler.h</in>
+          <in>dlg_handlers.c</in>
+          <in>dlg_handlers.h</in>
+          <in>dlg_hash.c</in>
+          <in>dlg_hash.h</in>
+          <in>dlg_load.h</in>
+          <in>dlg_profile.c</in>
+          <in>dlg_profile.h</in>
+          <in>dlg_replication.c</in>
+          <in>dlg_replication.h</in>
+          <in>dlg_req_within.c</in>
+          <in>dlg_req_within.h</in>
+          <in>dlg_timer.c</in>
+          <in>dlg_timer.h</in>
+          <in>dlg_tophiding.c</in>
+          <in>dlg_tophiding.h</in>
+          <in>dlg_vals.c</in>
+          <in>dlg_vals.h</in>
+        </df>
+        <df name="dialplan">
+          <df name="doc">
+          </df>
+          <in>dialplan.c</in>
+          <in>dialplan.h</in>
+          <in>dp_db.c</in>
+          <in>dp_db.h</in>
+          <in>dp_repl.c</in>
+        </df>
+        <df name="dispatcher">
+          <df name="doc">
+          </df>
+          <in>dispatch.c</in>
+          <in>dispatch.h</in>
+          <in>dispatcher.c</in>
+          <in>ds_bl.c</in>
+          <in>ds_bl.h</in>
+        </df>
+        <df name="diversion">
+          <df name="doc">
+          </df>
+          <in>diversion.c</in>
+        </df>
+        <df name="dns_cache">
+          <df name="doc">
+          </df>
+          <in>dns_cache.c</in>
+        </df>
+        <df name="domain">
+          <df name="doc">
+          </df>
+          <in>api.c</in>
+          <in>api.h</in>
+          <in>domain.c</in>
+          <in>domain.h</in>
+          <in>domain_mod.c</in>
+          <in>domain_mod.h</in>
+          <in>hash.c</in>
+          <in>hash.h</in>
+          <in>mi.c</in>
+          <in>mi.h</in>
+        </df>
+        <df name="domainpolicy">
+          <df name="doc">
+          </df>
+          <in>domainpolicy.c</in>
+          <in>domainpolicy.h</in>
+          <in>domainpolicy_mod.c</in>
+          <in>domainpolicy_mod.h</in>
+        </df>
+        <df name="drouting">
+          <df name="doc">
+          </df>
+          <in>dr_bl.c</in>
+          <in>dr_bl.h</in>
+          <in>dr_db_def.c</in>
+          <in>dr_db_def.h</in>
+          <in>dr_load.c</in>
+          <in>dr_load.h</in>
+          <in>drouting.c</in>
+          <in>parse.h</in>
+          <in>prefix_tree.c</in>
+          <in>prefix_tree.h</in>
+          <in>routing.c</in>
+          <in>routing.h</in>
+        </df>
+        <df name="enum">
+          <df name="doc">
+          </df>
+          <in>enum.c</in>
+          <in>enum.h</in>
+          <in>enum_mod.c</in>
+          <in>enum_mod.h</in>
+        </df>
+        <df name="event_datagram">
+          <df name="doc">
+          </df>
+          <in>event_datagram.c</in>
+          <in>event_datagram.h</in>
+        </df>
+        <df name="event_rabbitmq">
+          <df name="doc">
+          </df>
+          <in>event_rabbitmq.c</in>
+          <in>event_rabbitmq.h</in>
+          <in>rabbitmq_send.c</in>
+          <in>rabbitmq_send.h</in>
+        </df>
+        <df name="event_route">
+          <df name="doc">
+          </df>
+          <in>event_route.c</in>
+          <in>event_route.h</in>
+        </df>
+        <df name="event_xmlrpc">
+          <df name="doc">
+          </df>
+          <in>event_xmlrpc.c</in>
+          <in>event_xmlrpc.h</in>
+          <in>xmlrpc_send.c</in>
+          <in>xmlrpc_send.h</in>
+        </df>
+        <df name="exec">
+          <df name="doc">
+          </df>
+          <in>exec.c</in>
+          <in>exec.h</in>
+          <in>exec_hf.c</in>
+          <in>exec_hf.h</in>
+          <in>exec_mod.c</in>
+          <in>kill.c</in>
+          <in>kill.h</in>
+        </df>
+        <df name="gflags">
+          <df name="doc">
+          </df>
+          <in>gflags.c</in>
+        </df>
+        <df name="group">
+          <df name="doc">
+          </df>
+          <in>group.c</in>
+          <in>group.h</in>
+          <in>group_mod.c</in>
+          <in>group_mod.h</in>
+          <in>re_group.c</in>
+          <in>re_group.h</in>
+        </df>
+        <df name="h350">
+          <df name="doc">
+          </df>
+          <in>h350_exp_fn.c</in>
+          <in>h350_exp_fn.h</in>
+          <in>h350_mod.c</in>
+          <in>h350_mod.h</in>
+        </df>
+        <df name="httpd">
+          <df name="doc">
+          </df>
+          <in>httpd.c</in>
+          <in>httpd_load.h</in>
+          <in>httpd_proc.c</in>
+          <in>httpd_proc.h</in>
+        </df>
+        <df name="identity">
+          <df name="doc">
+          </df>
+          <in>identity.c</in>
+          <in>identity.h</in>
+        </df>
+        <df name="imc">
+          <df name="doc">
+          </df>
+          <in>imc.c</in>
+          <in>imc.h</in>
+          <in>imc_cmd.c</in>
+          <in>imc_cmd.h</in>
+          <in>imc_mng.c</in>
+          <in>imc_mng.h</in>
+        </df>
+        <df name="jabber">
+          <df name="doc">
+            <df name="web">
+            </df>
+          </df>
+          <in>jabber.c</in>
+          <in>mdefines.h</in>
+          <in>sha.c</in>
+          <in>tree234.c</in>
+          <in>tree234.h</in>
+          <in>xjab_base.c</in>
+          <in>xjab_base.h</in>
+          <in>xjab_dmsg.h</in>
+          <in>xjab_jcon.c</in>
+          <in>xjab_jcon.h</in>
+          <in>xjab_jconf.c</in>
+          <in>xjab_jconf.h</in>
+          <in>xjab_load.c</in>
+          <in>xjab_load.h</in>
+          <in>xjab_presence.c</in>
+          <in>xjab_presence.h</in>
+          <in>xjab_util.c</in>
+          <in>xjab_util.h</in>
+          <in>xjab_wlist.c</in>
+          <in>xjab_worker.c</in>
+          <in>xjab_worker.h</in>
+          <in>xode.c</in>
+          <in>xode.h</in>
+          <in>xode_from.c</in>
+          <in>xode_str.c</in>
+          <in>xpool.c</in>
+          <in>xsnprintf.c</in>
+          <in>xstream.c</in>
+        </df>
+        <df name="json">
+          <df name="doc">
+          </df>
+          <in>array_del.c</in>
+          <in>json.c</in>
+        </df>
+        <df name="ldap">
+          <df name="doc">
+          </df>
+          <df name="etc">
+          </df>
+          <in>api.h</in>
+          <in>iniparser.c</in>
+          <in>iniparser.h</in>
+          <in>ld_session.c</in>
+          <in>ld_session.h</in>
+          <in>ldap_api_fn.c</in>
+          <in>ldap_api_fn.h</in>
+          <in>ldap_connect.c</in>
+          <in>ldap_connect.h</in>
+          <in>ldap_escape.c</in>
+          <in>ldap_escape.h</in>
+          <in>ldap_exp_fn.c</in>
+          <in>ldap_exp_fn.h</in>
+          <in>ldap_mod.c</in>
+        </df>
+        <df name="load_balancer">
+          <df name="doc">
+          </df>
+          <in>lb_bl.c</in>
+          <in>lb_bl.h</in>
+          <in>lb_data.c</in>
+          <in>lb_data.h</in>
+          <in>lb_db.c</in>
+          <in>lb_db.h</in>
+          <in>lb_parser.c</in>
+          <in>lb_parser.h</in>
+          <in>lb_prober.c</in>
+          <in>lb_prober.h</in>
+          <in>load_balancer.c</in>
+        </df>
+        <df name="lua">
+          <df name="doc">
+          </df>
+          <in>crc32.c</in>
+          <in>crc32.h</in>
+          <in>sipapi.c</in>
+          <in>sipapi.h</in>
+          <in>sipdatetime.c</in>
+          <in>sipdatetime.h</in>
+          <in>siplua.c</in>
+          <in>siplua.h</in>
+          <in>sipluafunc.c</in>
+          <in>sipluafunc.h</in>
+          <in>sipluami.c</in>
+          <in>sipluami.h</in>
+          <in>sipmemcache.c</in>
+          <in>sipmemcache.h</in>
+          <in>sipmysql.c</in>
+          <in>sipmysql.h</in>
+          <in>sipstate.c</in>
+          <in>sipstate.h</in>
+          <in>sipwatch.c</in>
+          <in>sipwatch.h</in>
+        </df>
+        <df name="mangler">
+          <df name="doc">
+          </df>
+          <in>common.h</in>
+          <in>contact_ops.c</in>
+          <in>contact_ops.h</in>
+          <in>ip_helper.c</in>
+          <in>ip_helper.h</in>
+          <in>mangler.c</in>
+          <in>mangler.h</in>
+          <in>sdp_mangler.c</in>
+          <in>sdp_mangler.h</in>
+          <in>utils.c</in>
+          <in>utils.h</in>
+        </df>
+        <df name="mathops">
+          <df name="doc">
+          </df>
+          <in>math_funcs.c</in>
+          <in>math_funcs.h</in>
+          <in>mathops.c</in>
+        </df>
+        <df name="maxfwd">
+          <df name="doc">
+          </df>
+          <in>maxfwd.c</in>
+          <in>mf_funcs.c</in>
+          <in>mf_funcs.h</in>
+        </df>
+        <df name="mediaproxy">
+          <df name="doc">
+          </df>
+          <in>mediaproxy.c</in>
+        </df>
+        <df name="mi_datagram">
+          <df name="doc">
+          </df>
+          <in>datagram_fnc.c</in>
+          <in>datagram_fnc.h</in>
+          <in>mi_datagram.c</in>
+          <in>mi_datagram.h</in>
+          <in>mi_datagram_parser.c</in>
+          <in>mi_datagram_parser.h</in>
+          <in>mi_datagram_writer.c</in>
+          <in>mi_datagram_writer.h</in>
+        </df>
+        <df name="mi_fifo">
+          <df name="doc">
+          </df>
+          <in>fifo_fnc.c</in>
+          <in>fifo_fnc.h</in>
+          <in>mi_fifo.c</in>
+          <in>mi_fifo.h</in>
+          <in>mi_parser.c</in>
+          <in>mi_parser.h</in>
+          <in>mi_writer.c</in>
+          <in>mi_writer.h</in>
+        </df>
+        <df name="mi_http">
+          <df name="doc">
+          </df>
+          <in>http_fnc.c</in>
+          <in>http_fnc.h</in>
+          <in>mi_http.c</in>
+        </df>
+        <df name="mi_json">
+          <df name="doc">
+          </df>
+          <in>http_fnc.c</in>
+          <in>http_fnc.h</in>
+          <in>mi_json.c</in>
+        </df>
+        <df name="mi_xmlrpc">
+          <df name="doc">
+          </df>
+          <in>abyss.h</in>
+          <in>abyss_conf.c</in>
+          <in>abyss_conn.c</in>
+          <in>abyss_conn.h</in>
+          <in>abyss_data.c</in>
+          <in>abyss_data.h</in>
+          <in>abyss_date.c</in>
+          <in>abyss_date.h</in>
+          <in>abyss_file.c</in>
+          <in>abyss_file.h</in>
+          <in>abyss_http.c</in>
+          <in>abyss_http.h</in>
+          <in>abyss_info.h</in>
+          <in>abyss_mallocvar.h</in>
+          <in>abyss_response.c</in>
+          <in>abyss_server.c</in>
+          <in>abyss_server.h</in>
+          <in>abyss_session.c</in>
+          <in>abyss_session.h</in>
+          <in>abyss_socket.c</in>
+          <in>abyss_socket.h</in>
+          <in>abyss_socket_unix.c</in>
+          <in>abyss_socket_unix.h</in>
+          <in>abyss_thread.h</in>
+          <in>abyss_thread_fork.c</in>
+          <in>abyss_token.c</in>
+          <in>abyss_token.h</in>
+          <in>abyss_trace.c</in>
+          <in>abyss_trace.h</in>
+          <in>abyss_xmlrpc_int.h</in>
+          <in>abyss_xmlrpc_server.c</in>
+          <in>mi_xmlrpc.c</in>
+          <in>mi_xmlrpc.h</in>
+          <in>xr_parser.c</in>
+          <in>xr_parser.h</in>
+          <in>xr_parser_lib.h</in>
+          <in>xr_server.c</in>
+          <in>xr_server.h</in>
+          <in>xr_writer.c</in>
+          <in>xr_writer.h</in>
+        </df>
+        <df name="mi_xmlrpc_ng">
+          <df name="doc">
+          </df>
+          <in>http_fnc.c</in>
+          <in>http_fnc.h</in>
+          <in>mi_xmlrpc_http.c</in>
+        </df>
+        <df name="mmgeoip">
+          <df name="doc">
+          </df>
+          <in>mmgeoip.c</in>
+        </df>
+        <df name="msilo">
+          <df name="doc">
+          </df>
+          <in>ms_msg_list.c</in>
+          <in>ms_msg_list.h</in>
+          <in>msfuncs.c</in>
+          <in>msfuncs.h</in>
+          <in>msilo.c</in>
+        </df>
+        <df name="nat_traversal">
+          <df name="doc">
+          </df>
+          <in>nat_traversal.c</in>
+        </df>
+        <df name="nathelper">
+          <df name="doc">
+          </df>
+          <df name="examples">
+          </df>
+          <in>nathelper.c</in>
+          <in>sip_pinger.h</in>
+        </df>
+        <df name="options">
+          <df name="doc">
+          </df>
+          <in>mod_options.c</in>
+          <in>mod_options.h</in>
+        </df>
+        <df name="osp">
+          <df name="doc">
+          </df>
+          <df name="etc">
+          </df>
+          <in>destination.c</in>
+          <in>destination.h</in>
+          <in>globals.c</in>
+          <in>orig_transaction.c</in>
+          <in>orig_transaction.h</in>
+          <in>osp_mod.c</in>
+          <in>osp_mod.h</in>
+          <in>osptoolkit.c</in>
+          <in>osptoolkit.h</in>
+          <in>provider.c</in>
+          <in>provider.h</in>
+          <in>sipheader.c</in>
+          <in>sipheader.h</in>
+          <in>term_transaction.c</in>
+          <in>term_transaction.h</in>
+          <in>tm.c</in>
+          <in>tm.h</in>
+          <in>usage.c</in>
+          <in>usage.h</in>
+        </df>
+        <df name="path">
+          <df name="doc">
+          </df>
+          <in>path.c</in>
+          <in>path.h</in>
+          <in>path_mod.c</in>
+          <in>path_mod.h</in>
+        </df>
+        <df name="pdt">
+          <df name="doc">
+          </df>
+          <in>pdt.c</in>
+          <in>pdtree.c</in>
+          <in>pdtree.h</in>
+        </df>
+        <df name="peering">
+          <df name="doc">
+          </df>
+          <in>peering.c</in>
+          <in>peering.h</in>
+          <in>verify.c</in>
+          <in>verify.h</in>
+        </df>
+        <df name="perl">
+          <df name="doc">
+            <df name="samples">
+            </df>
+          </df>
+          <df name="lib">
+            <df name="perl">
+              <df name="OpenSIPS">
+                <df name="LDAPUtils">
+                </df>
+                <df name="Utils">
+                </df>
+                <df name="VDB">
+                  <df name="Adapter">
+                  </df>
+                </df>
+              </df>
+            </df>
+          </df>
+          <in>perl.c</in>
+          <in>perl.h</in>
+          <in>perlfunc.c</in>
+          <in>perlfunc.h</in>
+        </df>
+        <df name="permissions">
+          <df name="config">
+          </df>
+          <df name="doc">
+          </df>
+          <in>address.c</in>
+          <in>address.h</in>
+          <in>hash.c</in>
+          <in>hash.h</in>
+          <in>mi.c</in>
+          <in>mi.h</in>
+          <in>parse_config.c</in>
+          <in>parse_config.h</in>
+          <in>permissions.c</in>
+          <in>permissions.h</in>
+          <in>rule.c</in>
+          <in>rule.h</in>
+        </df>
+        <df name="pi_http">
+          <df name="doc">
+          </df>
+          <in>http_db_handler.c</in>
+          <in>http_db_handler.h</in>
+          <in>http_fnc.c</in>
+          <in>http_fnc.h</in>
+          <in>pi_http.c</in>
+        </df>
+        <df name="pike">
+          <df name="doc">
+          </df>
+          <in>ip_tree.c</in>
+          <in>ip_tree.h</in>
+          <in>pike.c</in>
+          <in>pike_funcs.c</in>
+          <in>pike_funcs.h</in>
+          <in>pike_mi.c</in>
+          <in>pike_mi.h</in>
+          <in>timer.c</in>
+          <in>timer.h</in>
+        </df>
+        <df name="presence">
+          <df name="doc">
+          </df>
+          <in>bind_presence.c</in>
+          <in>bind_presence.h</in>
+          <in>event_list.c</in>
+          <in>event_list.h</in>
+          <in>hash.c</in>
+          <in>hash.h</in>
+          <in>notify.c</in>
+          <in>notify.h</in>
+          <in>presence.c</in>
+          <in>presence.h</in>
+          <in>presentity.c</in>
+          <in>presentity.h</in>
+          <in>publish.c</in>
+          <in>publish.h</in>
+          <in>subscribe.c</in>
+          <in>subscribe.h</in>
+          <in>utils_func.c</in>
+          <in>utils_func.h</in>
+        </df>
+        <df name="presence_callinfo">
+          <df name="doc">
+          </df>
+          <in>add_events.c</in>
+          <in>add_events.h</in>
+          <in>presence_callinfo.c</in>
+          <in>presence_callinfo.h</in>
+          <in>sca_dialog.c</in>
+          <in>sca_dialog.h</in>
+          <in>sca_hash.c</in>
+          <in>sca_hash.h</in>
+        </df>
+        <df name="presence_dialoginfo">
+          <df name="doc">
+          </df>
+          <in>add_events.c</in>
+          <in>add_events.h</in>
+          <in>notify_body.c</in>
+          <in>notify_body.h</in>
+          <in>pidf.c</in>
+          <in>pidf.h</in>
+          <in>presence_dialoginfo.c</in>
+          <in>presence_dialoginfo.h</in>
+        </df>
+        <df name="presence_mwi">
+          <df name="doc">
+          </df>
+          <in>add_events.c</in>
+          <in>add_events.h</in>
+          <in>presence_mwi.c</in>
+          <in>presence_mwi.h</in>
+        </df>
+        <df name="presence_xcapdiff">
+          <df name="doc">
+          </df>
+          <in>presence_xcapdiff.c</in>
+        </df>
+        <df name="presence_xml">
+          <df name="doc">
+          </df>
+          <in>add_events.c</in>
+          <in>add_events.h</in>
+          <in>notify_body.c</in>
+          <in>notify_body.h</in>
+          <in>pidf.c</in>
+          <in>pidf.h</in>
+          <in>presence_xml.c</in>
+          <in>presence_xml.h</in>
+          <in>xcap_auth.c</in>
+          <in>xcap_auth.h</in>
+        </df>
+        <df name="pua">
+          <df name="doc">
+          </df>
+          <in>add_events.c</in>
+          <in>add_events.h</in>
+          <in>event_list.c</in>
+          <in>event_list.h</in>
+          <in>hash.c</in>
+          <in>hash.h</in>
+          <in>pidf.c</in>
+          <in>pidf.h</in>
+          <in>pua.c</in>
+          <in>pua.h</in>
+          <in>pua_bind.c</in>
+          <in>pua_bind.h</in>
+          <in>pua_callback.c</in>
+          <in>pua_callback.h</in>
+          <in>send_publish.c</in>
+          <in>send_publish.h</in>
+          <in>send_subscribe.c</in>
+          <in>send_subscribe.h</in>
+          <in>uri_list.h</in>
+        </df>
+        <df name="pua_bla">
+          <df name="doc">
+          </df>
+          <in>notify.c</in>
+          <in>pua_bla.c</in>
+          <in>pua_bla.h</in>
+          <in>registrar_cb.c</in>
+          <in>registrar_cb.h</in>
+        </df>
+        <df name="pua_dialoginfo">
+          <df name="doc">
+          </df>
+          <in>dialog_publish.c</in>
+          <in>pua_dialoginfo.c</in>
+          <in>pua_dialoginfo.h</in>
+        </df>
+        <df name="pua_mi">
+          <df name="doc">
+          </df>
+          <in>mi_func.c</in>
+          <in>mi_func.h</in>
+          <in>pua_mi.c</in>
+          <in>pua_mi.h</in>
+        </df>
+        <df name="pua_usrloc">
+          <df name="doc">
+          </df>
+          <in>pua_usrloc.c</in>
+          <in>pua_usrloc.h</in>
+          <in>ul_publish.c</in>
+        </df>
+        <df name="pua_xmpp">
+          <df name="doc">
+          </df>
+          <in>pidf.c</in>
+          <in>pidf.h</in>
+          <in>pua_xmpp.c</in>
+          <in>pua_xmpp.h</in>
+          <in>request_winfo.c</in>
+          <in>request_winfo.h</in>
+          <in>simple2xmpp.c</in>
+          <in>simple2xmpp.h</in>
+          <in>xmpp2simple.c</in>
+          <in>xmpp2simple.h</in>
+        </df>
+        <df name="python">
+          <in>python_exec.c</in>
+          <in>python_exec.h</in>
+          <in>python_iface.c</in>
+          <in>python_iface.h</in>
+          <in>python_mod.c</in>
+          <in>python_mod.h</in>
+          <in>python_msgobj.c</in>
+          <in>python_msgobj.h</in>
+          <in>python_support.c</in>
+          <in>python_support.h</in>
+        </df>
+        <df name="qos">
+          <df name="doc">
+          </df>
+          <in>qos.c</in>
+          <in>qos_cb.c</in>
+          <in>qos_cb.h</in>
+          <in>qos_ctx_helpers.c</in>
+          <in>qos_ctx_helpers.h</in>
+          <in>qos_handlers.c</in>
+          <in>qos_handlers.h</in>
+          <in>qos_load.h</in>
+          <in>qos_mi.c</in>
+          <in>qos_mi.h</in>
+        </df>
+        <df name="ratelimit">
+          <df name="doc">
+          </df>
+          <in>ratelimit.c</in>
+          <in>ratelimit.h</in>
+          <in>ratelimit_helper.c</in>
+        </df>
+        <df name="regex">
+          <df name="doc">
+          </df>
+          <in>regex_mod.c</in>
+        </df>
+        <df name="registrar">
+          <df name="doc">
+          </df>
+          <in>common.c</in>
+          <in>common.h</in>
+          <in>lookup.c</in>
+          <in>lookup.h</in>
+          <in>path.c</in>
+          <in>path.h</in>
+          <in>reg_mod.c</in>
+          <in>reg_mod.h</in>
+          <in>regtime.c</in>
+          <in>regtime.h</in>
+          <in>reply.c</in>
+          <in>reply.h</in>
+          <in>rerrno.c</in>
+          <in>rerrno.h</in>
+          <in>save.c</in>
+          <in>save.h</in>
+          <in>sip_msg.c</in>
+          <in>sip_msg.h</in>
+        </df>
+        <df name="rest_client">
+          <df name="doc">
+          </df>
+          <in>rest_cb.c</in>
+          <in>rest_cb.h</in>
+          <in>rest_client.c</in>
+          <in>rest_methods.c</in>
+          <in>rest_methods.h</in>
+        </df>
+        <df name="rls">
+          <df name="doc">
+          </df>
+          <in>notify.c</in>
+          <in>notify.h</in>
+          <in>resource_notify.c</in>
+          <in>resource_notify.h</in>
+          <in>rls.c</in>
+          <in>rls.h</in>
+          <in>subscribe.c</in>
+          <in>subscribe.h</in>
+        </df>
+        <df name="rr">
+          <df name="doc">
+          </df>
+          <in>api.c</in>
+          <in>api.h</in>
+          <in>loose.c</in>
+          <in>loose.h</in>
+          <in>record.c</in>
+          <in>record.h</in>
+          <in>rr_cb.c</in>
+          <in>rr_cb.h</in>
+          <in>rr_mod.c</in>
+          <in>rr_mod.h</in>
+        </df>
+        <df name="rtpproxy">
+          <df name="doc">
+          </df>
+          <df name="examples">
+          </df>
+          <df name="patches">
+          </df>
+          <in>nhelpr_funcs.c</in>
+          <in>nhelpr_funcs.h</in>
+          <in>rtpproxy.c</in>
+          <in>rtpproxy.h</in>
+          <in>rtpproxy_callbacks.c</in>
+          <in>rtpproxy_callbacks.h</in>
+          <in>rtpproxy_stream.c</in>
+          <in>rtpproxy_stream.h</in>
+          <in>timeout_process.c</in>
+        </df>
+        <df name="script_helper">
+          <df name="doc">
+          </df>
+          <in>script_helper.c</in>
+        </df>
+        <df name="seas">
+          <df name="doc">
+            <df name="images">
+            </df>
+          </df>
+          <in>cluster.c</in>
+          <in>cluster.h</in>
+          <in>encode_allow.c</in>
+          <in>encode_allow.h</in>
+          <in>encode_contact.c</in>
+          <in>encode_contact.h</in>
+          <in>encode_content_disposition.c</in>
+          <in>encode_content_disposition.h</in>
+          <in>encode_content_length.c</in>
+          <in>encode_content_length.h</in>
+          <in>encode_content_type.c</in>
+          <in>encode_content_type.h</in>
+          <in>encode_cseq.c</in>
+          <in>encode_cseq.h</in>
+          <in>encode_digest.c</in>
+          <in>encode_digest.h</in>
+          <in>encode_expires.c</in>
+          <in>encode_expires.h</in>
+          <in>encode_header.c</in>
+          <in>encode_header.h</in>
+          <in>encode_msg.c</in>
+          <in>encode_msg.h</in>
+          <in>encode_parameters.c</in>
+          <in>encode_parameters.h</in>
+          <in>encode_route.c</in>
+          <in>encode_route.h</in>
+          <in>encode_to_body.c</in>
+          <in>encode_to_body.h</in>
+          <in>encode_uri.c</in>
+          <in>encode_uri.h</in>
+          <in>encode_via.c</in>
+          <in>encode_via.h</in>
+          <in>event_dispatcher.c</in>
+          <in>event_dispatcher.h</in>
+          <in>ha.c</in>
+          <in>ha.h</in>
+          <in>seas.c</in>
+          <in>seas.h</in>
+          <in>seas_action.c</in>
+          <in>seas_action.h</in>
+          <in>seas_error.h</in>
+          <in>statistics.c</in>
+          <in>statistics.h</in>
+          <in>utils.c</in>
+          <in>utils.h</in>
+          <in>xaddress.h</in>
+        </df>
+        <df name="signaling">
+          <df name="doc">
+          </df>
+          <in>signaling.c</in>
+          <in>signaling.h</in>
+        </df>
+        <df name="sipcapture">
+          <df name="doc">
+          </df>
+          <df name="examples">
+          </df>
+          <df name="sql">
+          </df>
+          <in>sipcapture.c</in>
+          <in>sipcapture.h</in>
+        </df>
+        <df name="sipmsgops">
+          <df name="doc">
+          </df>
+          <in>codecs.c</in>
+          <in>codecs.h</in>
+          <in>sipmsgops.c</in>
+        </df>
+        <df name="siptrace">
+          <df name="doc">
+          </df>
+          <in>siptrace.c</in>
+        </df>
+        <df name="sl">
+          <df name="doc">
+          </df>
+          <in>sl.c</in>
+          <in>sl.h</in>
+          <in>sl_api.h</in>
+          <in>sl_cb.c</in>
+          <in>sl_cb.h</in>
+          <in>sl_funcs.c</in>
+          <in>sl_funcs.h</in>
+        </df>
+        <df name="sms">
+          <df name="doc">
+          </df>
+          <in>libsms_charset.c</in>
+          <in>libsms_charset.h</in>
+          <in>libsms_getsms.c</in>
+          <in>libsms_modem.c</in>
+          <in>libsms_modem.h</in>
+          <in>libsms_putsms.c</in>
+          <in>libsms_sms.h</in>
+          <in>sms.c</in>
+          <in>sms_funcs.c</in>
+          <in>sms_funcs.h</in>
+          <in>sms_report.c</in>
+          <in>sms_report.h</in>
+        </df>
+        <df name="sngtc">
+          <df name="doc">
+          </df>
+          <in>sngtc.c</in>
+          <in>sngtc.h</in>
+          <in>sngtc_proc.c</in>
+          <in>sngtc_proc.h</in>
+        </df>
+        <df name="snmpstats">
+          <df name="doc">
+          </df>
+          <df name="mibs">
+          </df>
+          <in>alarm_checks.c</in>
+          <in>alarm_checks.h</in>
+          <in>hashTable.c</in>
+          <in>hashTable.h</in>
+          <in>interprocess_buffer.c</in>
+          <in>interprocess_buffer.h</in>
+          <in>openserMIBNotifications.c</in>
+          <in>openserMIBNotifications.h</in>
+          <in>openserObjects.c</in>
+          <in>openserObjects.h</in>
+          <in>openserSIPCommonObjects.c</in>
+          <in>openserSIPCommonObjects.h</in>
+          <in>openserSIPContactTable.c</in>
+          <in>openserSIPContactTable.h</in>
+          <in>openserSIPMethodSupportedTable.c</in>
+          <in>openserSIPMethodSupportedTable.h</in>
+          <in>openserSIPPortTable.c</in>
+          <in>openserSIPPortTable.h</in>
+          <in>openserSIPRegUserLookupTable.c</in>
+          <in>openserSIPRegUserLookupTable.h</in>
+          <in>openserSIPRegUserTable.c</in>
+          <in>openserSIPRegUserTable.h</in>
+          <in>openserSIPServerObjects.c</in>
+          <in>openserSIPServerObjects.h</in>
+          <in>openserSIPStatusCodesTable.c</in>
+          <in>openserSIPStatusCodesTable.h</in>
+          <in>snmpstats.c</in>
+          <in>snmpstats.h</in>
+          <in>snmpstats_globals.h</in>
+          <in>sub_agent.c</in>
+          <in>sub_agent.h</in>
+          <in>utilities.c</in>
+          <in>utilities.h</in>
+        </df>
+        <df name="speeddial">
+          <df name="doc">
+          </df>
+          <in>sdlookup.c</in>
+          <in>sdlookup.h</in>
+          <in>speeddial.c</in>
+          <in>speeddial.h</in>
+        </df>
+        <df name="sst">
+          <df name="doc">
+          </df>
+          <in>sst.c</in>
+          <in>sst_handlers.c</in>
+          <in>sst_handlers.h</in>
+          <in>sst_mi.c</in>
+          <in>sst_mi.h</in>
+        </df>
+        <df name="statistics">
+          <df name="doc">
+          </df>
+          <in>statistics.c</in>
+          <in>stats_funcs.c</in>
+          <in>stats_funcs.h</in>
+        </df>
+        <df name="stun">
+          <df name="doc">
+          </df>
+          <in>stun.c</in>
+          <in>stun.h</in>
+        </df>
+        <df name="textops">
+          <df name="doc">
+          </df>
+          <in>textops.c</in>
+        </df>
+        <df name="tlsops">
+          <df name="doc">
+          </df>
+          <in>tls_select.c</in>
+          <in>tls_select.h</in>
+          <in>tlsops.c</in>
+          <in>tlsops.h</in>
+        </df>
+        <df name="tm">
+          <df name="doc">
+          </df>
+          <in>callid.c</in>
+          <in>callid.h</in>
+          <in>config.h</in>
+          <in>dlg.c</in>
+          <in>dlg.h</in>
+          <in>fix_lumps.h</in>
+          <in>h_table.c</in>
+          <in>h_table.h</in>
+          <in>lock.c</in>
+          <in>lock.h</in>
+          <in>mi.c</in>
+          <in>mi.h</in>
+          <in>sip_msg.c</in>
+          <in>sip_msg.h</in>
+          <in>t_cancel.c</in>
+          <in>t_cancel.h</in>
+          <in>t_dlg.c</in>
+          <in>t_dlg.h</in>
+          <in>t_fifo.c</in>
+          <in>t_fifo.h</in>
+          <in>t_funcs.c</in>
+          <in>t_funcs.h</in>
+          <in>t_fwd.c</in>
+          <in>t_fwd.h</in>
+          <in>t_hooks.c</in>
+          <in>t_hooks.h</in>
+          <in>t_lookup.c</in>
+          <in>t_lookup.h</in>
+          <in>t_msgbuilder.c</in>
+          <in>t_msgbuilder.h</in>
+          <in>t_reply.c</in>
+          <in>t_reply.h</in>
+          <in>t_stats.h</in>
+          <in>timer.c</in>
+          <in>timer.h</in>
+          <in>tm.c</in>
+          <in>tm_load.h</in>
+          <in>uac.c</in>
+          <in>uac.h</in>
+          <in>ut.h</in>
+        </df>
+        <df name="uac">
+          <df name="doc">
+          </df>
+          <in>auth.c</in>
+          <in>replace.c</in>
+          <in>replace.h</in>
+          <in>uac.c</in>
+        </df>
+        <df name="uac_auth">
+          <df name="doc">
+          </df>
+          <in>auth.c</in>
+          <in>uac_auth.c</in>
+          <in>uac_auth.h</in>
+        </df>
+        <df name="uac_redirect">
+          <df name="doc">
+          </df>
+          <in>rd_filter.c</in>
+          <in>rd_filter.h</in>
+          <in>rd_funcs.c</in>
+          <in>rd_funcs.h</in>
+          <in>redirect.c</in>
+        </df>
+        <df name="uac_registrant">
+          <df name="doc">
+          </df>
+          <in>reg_db_handler.c</in>
+          <in>reg_db_handler.h</in>
+          <in>reg_records.c</in>
+          <in>reg_records.h</in>
+          <in>registrant.c</in>
+        </df>
+        <df name="uri">
+          <df name="doc">
+          </df>
+          <in>aaa_checks.c</in>
+          <in>aaa_checks.h</in>
+          <in>checks.c</in>
+          <in>checks.h</in>
+          <in>db_checks.c</in>
+          <in>db_checks.h</in>
+          <in>uri_mod.c</in>
+          <in>uri_mod.h</in>
+        </df>
+        <df name="userblacklist">
+          <df name="doc">
+          </df>
+          <in>db.c</in>
+          <in>db.h</in>
+          <in>dt.c</in>
+          <in>dt.h</in>
+          <in>userblacklist.c</in>
+        </df>
+        <df name="usrloc">
+          <df name="doc">
+          </df>
+          <in>dlist.c</in>
+          <in>dlist.h</in>
+          <in>hslot.c</in>
+          <in>hslot.h</in>
+          <in>ucontact.c</in>
+          <in>ucontact.h</in>
+          <in>udomain.c</in>
+          <in>udomain.h</in>
+          <in>ul_callback.c</in>
+          <in>ul_callback.h</in>
+          <in>ul_mi.c</in>
+          <in>ul_mi.h</in>
+          <in>ul_mod.c</in>
+          <in>ul_mod.h</in>
+          <in>urecord.c</in>
+          <in>urecord.h</in>
+          <in>ureplication.c</in>
+          <in>ureplication.h</in>
+          <in>usrloc.c</in>
+          <in>usrloc.h</in>
+          <in>utime.c</in>
+          <in>utime.h</in>
+        </df>
+        <df name="xcap">
+          <df name="doc">
+          </df>
+          <in>api.c</in>
+          <in>api.h</in>
+          <in>doc.c</in>
+          <in>doc.h</in>
+          <in>uri.c</in>
+          <in>uri.h</in>
+          <in>util.h</in>
+          <in>xcap_mod.c</in>
+          <in>xcap_mod.h</in>
+        </df>
+        <df name="xcap_client">
+          <df name="doc">
+          </df>
+          <in>xcap_callbacks.c</in>
+          <in>xcap_callbacks.h</in>
+          <in>xcap_client.c</in>
+          <in>xcap_client.h</in>
+          <in>xcap_functions.c</in>
+          <in>xcap_functions.h</in>
+        </df>
+        <df name="xmpp">
+          <df name="doc">
+          </df>
+          <in>network.c</in>
+          <in>network.h</in>
+          <in>sha.c</in>
+          <in>util.c</in>
+          <in>xmpp.c</in>
+          <in>xmpp.h</in>
+          <in>xmpp_api.c</in>
+          <in>xmpp_api.h</in>
+          <in>xmpp_component.c</in>
+          <in>xmpp_server.c</in>
+          <in>xode.c</in>
+          <in>xode.h</in>
+          <in>xode_from.c</in>
+          <in>xode_str.c</in>
+          <in>xpool.c</in>
+          <in>xsnprintf.c</in>
+          <in>xstream.c</in>
+        </df>
+      </df>
+      <df name="packaging">
+        <df name="debian">
+          <df name="patches">
+          </df>
+        </df>
+        <df name="fedora">
+        </df>
+        <df name="freebsd">
+          <df name="files">
+          </df>
+        </df>
+        <df name="gentoo">
+        </df>
+        <df name="netbsd">
+        </df>
+        <df name="openbsd">
+          <df name="pkg">
+          </df>
+        </df>
+        <df name="rpm">
+        </df>
+        <df name="solaris">
+        </df>
+      </df>
+      <df name="parser">
+        <df name="contact">
+          <in>contact.c</in>
+          <in>contact.h</in>
+          <in>parse_contact.c</in>
+          <in>parse_contact.h</in>
+        </df>
+        <df name="digest">
+          <in>digest.c</in>
+          <in>digest.h</in>
+          <in>digest_keys.h</in>
+          <in>digest_parser.c</in>
+          <in>digest_parser.h</in>
+          <in>param_parser.c</in>
+          <in>param_parser.h</in>
+        </df>
+        <df name="sdp">
+          <in>sdp.c</in>
+          <in>sdp.h</in>
+          <in>sdp_cloner.h</in>
+          <in>sdp_helpr_funcs.c</in>
+          <in>sdp_helpr_funcs.h</in>
+        </df>
+        <in>case_acce.h</in>
+        <in>case_allo.h</in>
+        <in>case_auth.h</in>
+        <in>case_call.h</in>
+        <in>case_cont.h</in>
+        <in>case_cseq.h</in>
+        <in>case_dive.h</in>
+        <in>case_even.h</in>
+        <in>case_expi.h</in>
+        <in>case_from.h</in>
+        <in>case_max.h</in>
+        <in>case_min_.h</in>
+        <in>case_orga.h</in>
+        <in>case_p_as.h</in>
+        <in>case_p_pr.h</in>
+        <in>case_path.h</in>
+        <in>case_prio.h</in>
+        <in>case_priv.h</in>
+        <in>case_prox.h</in>
+        <in>case_reco.h</in>
+        <in>case_refe.h</in>
+        <in>case_remo.h</in>
+        <in>case_requ.h</in>
+        <in>case_retr.h</in>
+        <in>case_rout.h</in>
+        <in>case_sess.h</in>
+        <in>case_sip.h</in>
+        <in>case_subj.h</in>
+        <in>case_supp.h</in>
+        <in>case_to.h</in>
+        <in>case_unsu.h</in>
+        <in>case_user.h</in>
+        <in>case_via.h</in>
+        <in>case_www.h</in>
+        <in>hf.c</in>
+        <in>hf.h</in>
+        <in>keys.h</in>
+        <in>msg_parser.c</in>
+        <in>msg_parser.h</in>
+        <in>parse_allow.c</in>
+        <in>parse_allow.h</in>
+        <in>parse_authenticate.c</in>
+        <in>parse_authenticate.h</in>
+        <in>parse_call_info.c</in>
+        <in>parse_call_info.h</in>
+        <in>parse_content.c</in>
+        <in>parse_content.h</in>
+        <in>parse_cseq.c</in>
+        <in>parse_cseq.h</in>
+        <in>parse_def.h</in>
+        <in>parse_disposition.c</in>
+        <in>parse_disposition.h</in>
+        <in>parse_diversion.c</in>
+        <in>parse_diversion.h</in>
+        <in>parse_event.c</in>
+        <in>parse_event.h</in>
+        <in>parse_expires.c</in>
+        <in>parse_expires.h</in>
+        <in>parse_fline.c</in>
+        <in>parse_fline.h</in>
+        <in>parse_from.c</in>
+        <in>parse_from.h</in>
+        <in>parse_hname2.c</in>
+        <in>parse_hname2.h</in>
+        <in>parse_methods.c</in>
+        <in>parse_methods.h</in>
+        <in>parse_min_expires.c</in>
+        <in>parse_min_expires.h</in>
+        <in>parse_multipart.c</in>
+        <in>parse_multipart.h</in>
+        <in>parse_nameaddr.c</in>
+        <in>parse_nameaddr.h</in>
+        <in>parse_pai.c</in>
+        <in>parse_pai.h</in>
+        <in>parse_param.c</in>
+        <in>parse_param.h</in>
+        <in>parse_ppi.c</in>
+        <in>parse_ppi.h</in>
+        <in>parse_privacy.c</in>
+        <in>parse_privacy.h</in>
+        <in>parse_refer_to.c</in>
+        <in>parse_refer_to.h</in>
+        <in>parse_replaces.c</in>
+        <in>parse_replaces.h</in>
+        <in>parse_rpid.c</in>
+        <in>parse_rpid.h</in>
+        <in>parse_rr.c</in>
+        <in>parse_rr.h</in>
+        <in>parse_sipifmatch.c</in>
+        <in>parse_sipifmatch.h</in>
+        <in>parse_sst.c</in>
+        <in>parse_sst.h</in>
+        <in>parse_supported.c</in>
+        <in>parse_supported.h</in>
+        <in>parse_to.c</in>
+        <in>parse_to.h</in>
+        <in>parse_uri.c</in>
+        <in>parse_uri.h</in>
+        <in>parse_via.c</in>
+        <in>parse_via.h</in>
+        <in>parser_f.c</in>
+        <in>parser_f.h</in>
+      </df>
+      <df name="scripts">
+        <df name="db_berkeley">
+          <df name="opensips">
+          </df>
+        </df>
+        <df name="dbtext">
+          <df name="opensips">
+          </df>
+        </df>
+        <df name="dbtextdb">
+          <df name="tests">
+          </df>
+        </df>
+        <df name="mysql">
+        </df>
+        <df name="oracle">
+          <df name="admin">
+          </df>
+          <df name="inc">
+          </df>
+        </df>
+        <df name="pi_http">
+        </df>
+        <df name="postgres">
+        </df>
+      </df>
+      <df name="test">
+        <df name="include">
+        </df>
+      </df>
+      <df name="tls">
+        <df name="doc">
+        </df>
+        <in>tls_config.c</in>
+        <in>tls_config.h</in>
+        <in>tls_domain.c</in>
+        <in>tls_domain.h</in>
+        <in>tls_init.c</in>
+        <in>tls_init.h</in>
+        <in>tls_server.c</in>
+        <in>tls_server.h</in>
+      </df>
+      <df name="utils">
+        <df name="db_berkeley">
+          <in>bdb_recover.c</in>
+          <in>bdb_recover.h</in>
+        </df>
+        <df name="db_oracle">
+          <in>getres.c</in>
+          <in>orasel.c</in>
+          <in>orasel.h</in>
+          <in>outres.c</in>
+          <in>selcon.c</in>
+          <in>util.c</in>
+        </df>
+        <df name="fifo_relay">
+        </df>
+        <df name="opensipsunix">
+          <in>opensipsunix.c</in>
+        </df>
+        <df name="profile">
+        </df>
+      </df>
+      <in>action.c</in>
+      <in>action.h</in>
+      <in>atomic.h</in>
+      <in>bin_interface.c</in>
+      <in>bin_interface.h</in>
+      <in>blacklists.c</in>
+      <in>blacklists.h</in>
+      <in>cfg.tab.c</in>
+      <in>cfg.tab.h</in>
+      <in>config.h</in>
+      <in>core_stats.c</in>
+      <in>core_stats.h</in>
+      <in>crc.c</in>
+      <in>crc.h</in>
+      <in>daemonize.c</in>
+      <in>daemonize.h</in>
+      <in>data_lump.c</in>
+      <in>data_lump.h</in>
+      <in>data_lump_rpl.c</in>
+      <in>data_lump_rpl.h</in>
+      <in>dprint.c</in>
+      <in>dprint.h</in>
+      <in>dset.c</in>
+      <in>dset.h</in>
+      <in>errinfo.c</in>
+      <in>errinfo.h</in>
+      <in>error.c</in>
+      <in>error.h</in>
+      <in>fastlock.h</in>
+      <in>flags.c</in>
+      <in>flags.h</in>
+      <in>forward.c</in>
+      <in>forward.h</in>
+      <in>futex_lock.h</in>
+      <in>globals.h</in>
+      <in>hash_func.h</in>
+      <in>help_msg.h</in>
+      <in>io_wait.c</in>
+      <in>io_wait.h</in>
+      <in>ip_addr.c</in>
+      <in>ip_addr.h</in>
+      <in>lex.yy.c</in>
+      <in>lock_alloc.h</in>
+      <in>lock_ops.h</in>
+      <in>locking.h</in>
+      <in>lump_struct.h</in>
+      <in>main.c</in>
+      <in>map.c</in>
+      <in>map.h</in>
+      <in>md5.c</in>
+      <in>md5.h</in>
+      <in>md5global.h</in>
+      <in>md5utils.c</in>
+      <in>md5utils.h</in>
+      <in>mod_fix.c</in>
+      <in>mod_fix.h</in>
+      <in>modparam.c</in>
+      <in>modparam.h</in>
+      <in>msg_callbacks.c</in>
+      <in>msg_callbacks.h</in>
+      <in>msg_translator.c</in>
+      <in>msg_translator.h</in>
+      <in>name_alias.c</in>
+      <in>name_alias.h</in>
+      <in>pass_fd.c</in>
+      <in>pass_fd.h</in>
+      <in>poll_types.h</in>
+      <in>prime_hash.c</in>
+      <in>prime_hash.h</in>
+      <in>proxy.c</in>
+      <in>proxy.h</in>
+      <in>pt.c</in>
+      <in>pt.h</in>
+      <in>pvar.c</in>
+      <in>pvar.h</in>
+      <in>qvalue.c</in>
+      <in>qvalue.h</in>
+      <in>radius.h</in>
+      <in>re.c</in>
+      <in>re.h</in>
+      <in>receive.c</in>
+      <in>receive.h</in>
+      <in>regexp.c</in>
+      <in>regexp.h</in>
+      <in>resolve.c</in>
+      <in>resolve.h</in>
+      <in>route.c</in>
+      <in>route.h</in>
+      <in>route_struct.c</in>
+      <in>route_struct.h</in>
+      <in>rw_locking.h</in>
+      <in>script_cb.c</in>
+      <in>script_cb.h</in>
+      <in>script_var.c</in>
+      <in>script_var.h</in>
+      <in>sctp_server.c</in>
+      <in>sctp_server.h</in>
+      <in>serialize.c</in>
+      <in>serialize.h</in>
+      <in>sliblist.c</in>
+      <in>sliblist.h</in>
+      <in>socket_info.c</in>
+      <in>socket_info.h</in>
+      <in>sr_module.c</in>
+      <in>sr_module.h</in>
+      <in>statistics.c</in>
+      <in>statistics.h</in>
+      <in>str.h</in>
+      <in>strcommon.c</in>
+      <in>strcommon.h</in>
+      <in>tags.h</in>
+      <in>tcp_conn.h</in>
+      <in>tcp_init.h</in>
+      <in>tcp_main.c</in>
+      <in>tcp_read.c</in>
+      <in>tcp_server.h</in>
+      <in>time_rec.c</in>
+      <in>time_rec.h</in>
+      <in>timer.c</in>
+      <in>timer.h</in>
+      <in>transformations.c</in>
+      <in>transformations.h</in>
+      <in>trim.h</in>
+      <in>tsend.c</in>
+      <in>tsend.h</in>
+      <in>udp_server.c</in>
+      <in>udp_server.h</in>
+      <in>usr_avp.c</in>
+      <in>usr_avp.h</in>
+      <in>ut.c</in>
+      <in>ut.h</in>
+      <in>version.h</in>
+      <in>xlog.c</in>
+      <in>xlog.h</in>
+    </df>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>2</platform>
+      </toolsSet>
+      <compile>
+        <compiledirpicklist>
+          <compiledirpicklistitem>.</compiledirpicklistitem>
+          <compiledirpicklistitem>${AUTO_FOLDER}</compiledirpicklistitem>
+        </compiledirpicklist>
+        <compiledir>${AUTO_FOLDER}</compiledir>
+        <compilecommandpicklist>
+          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
+          <compilecommandpicklistitem>${AUTO_COMPILE}</compilecommandpicklistitem>
+        </compilecommandpicklist>
+        <compilecommand>${AUTO_COMPILE}</compilecommand>
+      </compile>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir>.</rundir>
+        <buildfirst>false</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+  </confs>
+</configurationDescriptor>

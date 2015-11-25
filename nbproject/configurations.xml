@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="aaa">
+        <in>aaa.c</in>
+      </df>
+      <df name="cachedb">
+        <in>cachedb.c</in>
+        <in>cachedb_id.c</in>
+        <in>cachedb_pool.c</in>
+      </df>
+      <df name="db">
+        <in>db.c</in>
+        <in>db_id.c</in>
+        <in>db_insertq.c</in>
+        <in>db_pool.c</in>
+        <in>db_query.c</in>
+        <in>db_res.c</in>
+        <in>db_row.c</in>
+        <in>db_ut.c</in>
+      </df>
+      <df name="evi">
+        <in>event_interface.c</in>
+        <in>evi_core.c</in>
+        <in>evi_params.c</in>
+        <in>evi_transport.c</in>
+      </df>
+      <df name="mem">
+        <in>f_malloc.c</in>
+        <in>hp_malloc.c</in>
+        <in>hp_malloc_stats.c</in>
+        <in>mem.c</in>
+        <in>memtest.c</in>
+        <in>q_malloc.c</in>
+        <in>shm_mem.c</in>
+        <in>vq_malloc.c</in>
+      </df>
+      <df name="mi">
+        <in>attr.c</in>
+        <in>fmt.c</in>
+        <in>mi.c</in>
+        <in>mi_core.c</in>
+        <in>tree.c</in>
+      </df>
+      <df name="parser">
+        <df name="contact">
+          <in>contact.c</in>
+          <in>parse_contact.c</in>
+        </df>
+        <df name="digest">
+          <in>digest.c</in>
+          <in>digest_parser.c</in>
+          <in>param_parser.c</in>
+        </df>
+        <df name="sdp">
+          <in>sdp.c</in>
+          <in>sdp_helpr_funcs.c</in>
+        </df>
+        <in>hf.c</in>
+        <in>msg_parser.c</in>
+        <in>parse_allow.c</in>
+        <in>parse_authenticate.c</in>
+        <in>parse_call_info.c</in>
+        <in>parse_content.c</in>
+        <in>parse_cseq.c</in>
+        <in>parse_disposition.c</in>
+        <in>parse_diversion.c</in>
+        <in>parse_event.c</in>
+        <in>parse_expires.c</in>
+        <in>parse_fline.c</in>
+        <in>parse_from.c</in>
+        <in>parse_hname2.c</in>
+        <in>parse_methods.c</in>
+        <in>parse_min_expires.c</in>
+        <in>parse_multipart.c</in>
+        <in>parse_nameaddr.c</in>
+        <in>parse_pai.c</in>
+        <in>parse_param.c</in>
+        <in>parse_ppi.c</in>
+        <in>parse_privacy.c</in>
+        <in>parse_refer_to.c</in>
+        <in>parse_replaces.c</in>
+        <in>parse_rpid.c</in>
+        <in>parse_rr.c</in>
+        <in>parse_sipifmatch.c</in>
+        <in>parse_sst.c</in>
+        <in>parse_supported.c</in>
+        <in>parse_to.c</in>
+        <in>parse_uri.c</in>
+        <in>parse_via.c</in>
+        <in>parser_f.c</in>
+      </df>
+      <in>action.c</in>
+      <in>bin_interface.c</in>
+      <in>blacklists.c</in>
+      <in>cfg.tab.c</in>
+      <in>core_stats.c</in>
+      <in>crc.c</in>
+      <in>daemonize.c</in>
+      <in>data_lump.c</in>
+      <in>data_lump_rpl.c</in>
+      <in>dprint.c</in>
+      <in>dset.c</in>
+      <in>errinfo.c</in>
+      <in>error.c</in>
+      <in>flags.c</in>
+      <in>forward.c</in>
+      <in>io_wait.c</in>
+      <in>ip_addr.c</in>
+      <in>lex.yy.c</in>
+      <in>main.c</in>
+      <in>map.c</in>
+      <in>md5.c</in>
+      <in>md5utils.c</in>
+      <in>mod_fix.c</in>
+      <in>modparam.c</in>
+      <in>msg_callbacks.c</in>
+      <in>msg_translator.c</in>
+      <in>name_alias.c</in>
+      <in>pass_fd.c</in>
+      <in>prime_hash.c</in>
+      <in>proxy.c</in>
+      <in>pt.c</in>
+      <in>pvar.c</in>
+      <in>qvalue.c</in>
+      <in>re.c</in>
+      <in>receive.c</in>
+      <in>regexp.c</in>
+      <in>resolve.c</in>
+      <in>route.c</in>
+      <in>route_struct.c</in>
+      <in>script_cb.c</in>
+      <in>script_var.c</in>
+      <in>sctp_server.c</in>
+      <in>serialize.c</in>
+      <in>sliblist.c</in>
+      <in>socket_info.c</in>
+      <in>sr_module.c</in>
+      <in>statistics.c</in>
+      <in>strcommon.c</in>
+      <in>tcp_main.c</in>
+      <in>tcp_read.c</in>
+      <in>time_rec.c</in>
+      <in>timer.c</in>
+      <in>transformations.c</in>
+      <in>tsend.c</in>
+      <in>udp_server.c</in>
+      <in>usr_avp.c</in>
+      <in>ut.c</in>
+      <in>xlog.c</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-g -mtune=nocona"/>
+      </flagsDictionary>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath>opensips</executablePath>
+          <cTool>
+            <preprocessorList>
+              <Elem>ADAPTIVE_WAIT</Elem>
+              <Elem>ADAPTIVE_WAIT_LOOPS=1024</Elem>
+              <Elem>ARCH="x86_64"</Elem>
+              <Elem>CFG_DIR="/usr//etc/opensips/"</Elem>
+              <Elem>CHANGEABLE_DEBUG_LEVEL</Elem>
+              <Elem>COMPILER="gcc 4.8.3"</Elem>
+              <Elem>DISABLE_NAGLE</Elem>
+              <Elem>FAST_LOCK</Elem>
+              <Elem>F_MALLOC</Elem>
+              <Elem>HAVE_ALLOCA_H</Elem>
+              <Elem>HAVE_EPOLL</Elem>
+              <Elem>HAVE_GETHOSTBYNAME2</Elem>
+              <Elem>HAVE_MSGHDR_MSG_CONTROL</Elem>
+              <Elem>HAVE_MSG_NOSIGNAL</Elem>
+              <Elem>HAVE_RESOLV_RES</Elem>
+              <Elem>HAVE_SCHED_YIELD</Elem>
+              <Elem>HAVE_SELECT</Elem>
+              <Elem>HAVE_SIGIO_RT</Elem>
+              <Elem>HAVE_TIMEGM</Elem>
+              <Elem>HAVE_UNION_SEMUN</Elem>
+              <Elem>NAME="opensips"</Elem>
+              <Elem>OS="linux"</Elem>
+              <Elem>PKG_MALLOC</Elem>
+              <Elem>SHM_MEM</Elem>
+              <Elem>SHM_MMAP</Elem>
+              <Elem>STATISTICS</Elem>
+              <Elem>THISREVISION="ed698c5"</Elem>
+              <Elem>USE_IPV6</Elem>
+              <Elem>USE_MCAST</Elem>
+              <Elem>USE_TCP</Elem>
+              <Elem>VERSION="1.11.2-notls"</Elem>
+              <Elem>VERSIONTYPE="git"</Elem>
+              <Elem>__CPU_x86_64</Elem>
+              <Elem>__OS_linux</Elem>
+              <Elem>__SMP_yes</Elem>
+            </preprocessorList>
+          </cTool>
+        </makeTool>
+      </makefileType>
+      <item path="aaa/aaa.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="action.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="bin_interface.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="blacklists.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="cachedb/cachedb.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="cachedb/cachedb_id.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="cachedb/cachedb_pool.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="cfg.tab.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="core_stats.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="crc.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="daemonize.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="data_lump.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="data_lump_rpl.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="db/db.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="db/db_id.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="db/db_insertq.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="db/db_pool.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="db/db_query.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="db/db_res.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="db/db_row.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="db/db_ut.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="dprint.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="dset.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="errinfo.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="error.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="evi/event_interface.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="evi/evi_core.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="evi/evi_params.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="evi/evi_transport.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <folder path="0/aaa">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/cachedb">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/db">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/evi">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/mem">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/mi">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/parser">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <item path="flags.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="forward.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="io_wait.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="ip_addr.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="lex.yy.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="map.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="md5.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="md5utils.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mem/f_malloc.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mem/hp_malloc.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mem/hp_malloc_stats.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mem/mem.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mem/memtest.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mem/q_malloc.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mem/shm_mem.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mem/vq_malloc.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mi/attr.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mi/fmt.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mi/mi.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mi/mi_core.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mi/tree.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="mod_fix.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="modparam.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="msg_callbacks.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="msg_translator.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="name_alias.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/contact/contact.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/contact/parse_contact.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/digest/digest.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/digest/digest_parser.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/digest/param_parser.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/hf.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/msg_parser.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_allow.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_authenticate.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_call_info.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_content.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_cseq.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_disposition.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_diversion.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_event.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_expires.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_fline.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_from.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_hname2.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_methods.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_min_expires.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_multipart.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_nameaddr.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_pai.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_param.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_ppi.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_privacy.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_refer_to.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_replaces.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_rpid.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_rr.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_sipifmatch.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_sst.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_supported.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_to.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_uri.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parse_via.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/parser_f.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/sdp/sdp.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parser/sdp/sdp_helpr_funcs.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="pass_fd.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="prime_hash.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="proxy.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="pt.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="pvar.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="qvalue.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="re.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="receive.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="regexp.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="resolve.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="route.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="route_struct.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="script_cb.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="script_var.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="sctp_server.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="serialize.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="sliblist.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="socket_info.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="sr_module.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="statistics.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="strcommon.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tcp_main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tcp_read.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="time_rec.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="timer.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="transformations.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tsend.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="udp_server.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="usr_avp.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="ut.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="xlog.c" ex="false" tool="0" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
