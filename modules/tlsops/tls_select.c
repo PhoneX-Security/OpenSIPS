@@ -451,6 +451,7 @@ int tlsops_comp(struct sip_msg *msg, pv_param_t *param,
 		case COMP_C:  nid = NID_countryName;            break;
 		case COMP_ST: nid = NID_stateOrProvinceName;    break;
 		case COMP_L:  nid = NID_localityName;           break;
+		case COMP_SUBJECT_SERIAL: nid = NID_serialNumber;break;
 		default:      nid = NID_undef;
 	}
 
@@ -478,6 +479,7 @@ int tlsops_comp(struct sip_msg *msg, pv_param_t *param,
 			case COMP_C:  elem = "CountryName";             break;
 			case COMP_ST: elem = "StateOrProvinceName";     break;
 			case COMP_L:  elem = "LocalityName";            break;
+			case COMP_SUBJECT_SERIAL:  elem = "SubjectSerialNumber";break;
 			default:      elem = "Unknown";                 break;
 			}
 			LM_DBG("element %s not found in "
