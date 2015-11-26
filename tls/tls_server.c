@@ -510,6 +510,12 @@ _tls_read(struct tcp_connection *c, void *buf, size_t len)
 	if (ret > 0) {
 		LM_DBG("%d bytes read\n", ret);
 		return ret;
+	} else if (ret == 0) {
+		/* unclean shutdown of the other peer */
+		LM_INFO("TLS connection to %s:%d closed dirty\n",
+				ip_addr2a(&c->rcv.src_ip), c->rcv.src_port);
+		c->state = S_CONN_EOF;
+		return 0;
 	} else {
 		err = SSL_get_error(ssl, ret);
 		switch (err) {
