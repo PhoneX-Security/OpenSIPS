@@ -43,7 +43,7 @@ int             crl_check_all = 0;
 /* default location of certificates */
 char           *tls_cert_file = TLS_CERT_FILE;
 char           *tls_pkey_file = TLS_PKEY_FILE;
-char           *crl_directory = NULL;
+char           *tls_crl_directory = NULL;
 char           *tls_ca_file   = TLS_CA_FILE;
 char 	       *tls_ca_dir    = TLS_CA_DIRECTORY;
 char           *tls_tmp_dh_file        = TLS_DH_PARAMS_FILE;

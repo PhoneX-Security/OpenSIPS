@@ -400,7 +400,8 @@ extern int line;
 %token TLS_CERTIFICATE
 %token TLS_PRIVATE_KEY
 %token TLS_CA_LIST
-%token TLS_CA_DIR 
+%token TLS_CA_DIR
+%token TLS_CRL_DIR
 %token TLS_CIPHERS_LIST
 %token TLS_DH_PARAMS
 %token TLS_EC_CURVE
@@ -1130,7 +1131,18 @@ assign_stm: DEBUG EQUAL snumber {
                                                                         #endif
                                                                         }
                 | TLS_CA_DIR EQUAL error { yyerror("string value expected"); }
-		| TLS_CIPHERS_LIST EQUAL STRING { 
+ 	        | TLS_CRL_DIR EQUAL STRING {
+                                                                        #ifdef USE_TLS
+                                                                                tls_default_server_domain->crl_directory =
+                                                                                        $3;
+                                                                                tls_default_client_domain->crl_directory =
+                                                                                        $3;
+                                                                        #else
+                                                                                warn("tls support not compiled in");
+                                                                        #endif
+                                                                        }
+                | TLS_CRL_DIR EQUAL error { yyerror("string value expected"); }
+		| TLS_CIPHERS_LIST EQUAL STRING {
 									#ifdef USE_TLS
 										tls_default_server_domain->ciphers_list
 											= $3;
@@ -1610,6 +1622,14 @@ tls_server_var : TLS_METHOD EQUAL SSLv23 {
                                                 #endif
                                                                 }
         | TLS_CA_DIR EQUAL error { yyerror("string value expected"); }
+	| TLS_CRL_DIR EQUAL STRING {
+                                                #ifdef USE_TLS
+                                                                        tls_server_domains->crl_directory=$3;
+                                                #else
+                                                                        warn("tls support not compiled in");
+                                                #endif
+                                                                }
+        | TLS_CRL_DIR EQUAL error { yyerror("string value expected"); }
 	| TLS_CIPHERS_LIST EQUAL STRING { 
 						#ifdef USE_TLS
 									tls_server_domains->ciphers_list=$3;
@@ -1724,6 +1744,14 @@ tls_client_var : TLS_METHOD EQUAL SSLv23 {
                                                 #endif
                                                                 }
         | TLS_CA_DIR EQUAL error { yyerror("string value expected"); }
+	| TLS_CRL_DIR EQUAL STRING {
+                                                #ifdef USE_TLS
+                                                                        tls_client_domains->crl_directory=$3;
+                                                #else
+                                                                        warn("tls support not compiled in");
+                                                #endif
+                                                                }
+        | TLS_CRL_DIR EQUAL error { yyerror("string value expected"); }
 	| TLS_CIPHERS_LIST EQUAL STRING { 
 						#ifdef USE_TLS
 									tls_client_domains->ciphers_list=$3;
