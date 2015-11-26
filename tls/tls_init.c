@@ -382,11 +382,10 @@ load_crl(SSL_CTX * ctx, char *crl_directory, int crl_check_all)
 
 	if (!crl_added) {
 		LM_ERR("No suitable CRL files found in directory %s\n", crl_directory);
-		return 0;
 	}
 
 	/*Enable CRL checking*/
-	tls_set_crl_checking(ctx, 1, crl_check_all);
+	tls_set_crl_checking(ctx, crl_added > 0, crl_check_all);
 	return 0;
 }
 
