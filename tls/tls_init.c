@@ -324,7 +324,7 @@ tls_load_crl_to_store(X509_STORE *store, char *crl_directory, int *p_crl_added)
 
 	if (!crl_added) {
 		LM_ERR("No suitable CRL files found in directory %s\n", crl_directory);
-		return -1;
+		return 0;
 	}
 
 	return 0;
@@ -375,7 +375,7 @@ load_crl(SSL_CTX * ctx, char *crl_directory, int crl_check_all)
 	}
 
 	/*Load CRL to provided store*/
-	if (tls_load_crl_to_store(store, crl_directory, NULL) != 0){
+	if (tls_load_crl_to_store(store, crl_directory, &crl_added) != 0){
 		LM_ERR("Could not load CRL");
 		return -1;
 	}
