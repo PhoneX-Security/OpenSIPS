@@ -92,4 +92,6 @@ int tlsops_comp(struct sip_msg *msg, pv_param_t *param,
 int tlsops_alt(struct sip_msg *msg, pv_param_t *param,
 		pv_value_t *res);
 
+int tlsops_get_peer_cn(struct sip_msg *msg, str *res,
+		char * buff, size_t buff_size);
 #endif
