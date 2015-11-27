@@ -325,6 +325,8 @@ tls_load_crl_to_store(X509_STORE *store, char *crl_directory, int *p_crl_added)
 	if (!crl_added) {
 		LM_ERR("No suitable CRL files found in directory %s\n", crl_directory);
 		return 0;
+	} else {
+		LM_INFO("CRLs added: %d\n", crl_added);
 	}
 
 	return 0;
