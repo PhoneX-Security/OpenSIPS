@@ -61,7 +61,6 @@ static str domain_col      = str_init("domain");
 static str* db_columns[6] = {&uuid_col, &attribute_col, &value_col,
                              &type_col, &username_col, &domain_col};
 
-static struct db_url* default_db_url = NULL;
 unsigned buf_size=1024;
 
 static int avpops_init(void);
@@ -212,11 +211,28 @@ static int avpops_init(void)
 	username_col.len = strlen(username_col.s);
 	domain_col.len = strlen(domain_col.s);
 
+	default_db_url = get_default_db_url();
+	if (default_db_url==NULL) {
+		if (db_default_url==NULL) {
+			LM_ERR("no DB URL provision into the module!\n");
+			return -1;
+		}
+		/* if nothing explicitly set as DB URL, add automatically
+		 * the default DB URL */
+		if (add_db_url(STR_PARAM, db_default_url)!=0) {
+			LM_ERR("failed to use the default DB URL!\n");
+			return -1;
+		}
+		default_db_url = get_default_db_url();
+		if (default_db_url==NULL) {
+			LM_BUG("Really ?!\n");
+			return -1;
+		}
+	}
+
 	/* bind to the DB module */
 	if (avpops_db_bind()<0)
 		goto error;
-
-	default_db_url = get_default_db_url();
 
 	init_store_avps(db_columns);
 
@@ -242,7 +258,7 @@ static int avpops_child_init(int rank)
 }
 
 
-static int fixup_db_url(void ** param)
+static int fixup_db_url(void ** param, int require_raw_query)
 {
 	struct db_url* url;
 	unsigned int ui;
@@ -261,6 +277,16 @@ static int fixup_db_url(void ** param)
 		LM_ERR("no db_url with id <%s>\n", (char *)(*param));
 		return E_CFG;
 	}
+
+	/*
+	 * Since mod_init() is run before function fixups, all DB structs
+	 * are initialized and all DB capabilities are populated
+	 */
+	if (require_raw_query && !DB_CAPABILITY(url->dbf, DB_CAP_RAW_QUERY)) {
+		LM_ERR("driver for DB URL [%u] does not support raw queries\n", ui);
+		return -1;
+	}
+
 	pkg_free(*param);
 	*param=(void *)url;
 	return 0;
@@ -403,7 +429,7 @@ static int fixup_db_avp(void** param, int param_no, int allow_scheme)
 		dbp_fixup = dbp;
 		*param=(void*)dbp;
 	} else if (param_no==3) {
-		return fixup_db_url(param);
+		return fixup_db_url(param, 0);
 	} else if (param_no==4) {
 		return fixup_avp_prefix(param);
 	}
@@ -473,7 +499,7 @@ static int fixup_db_query_avp(void** param, int param_no)
 		*param = (void*)anlist;
 		return 0;
 	} else if (param_no==3) {
-		return fixup_db_url(param);
+		return fixup_db_url(param, 1);
 	}
 
 	return 0;

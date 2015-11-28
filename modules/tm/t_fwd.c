@@ -152,10 +152,15 @@ static inline int pre_print_uac_request( struct cell *t, int branch,
 			LM_DBG("dropping branch <%.*s>\n", request->new_uri.len,
 					request->new_uri.s);
 			_tm_branch_index = 0;
+			/* restore the route type */
+			set_route_type( backup_route_type );
+			/* restore original avp list */
+			set_avp_list( backup_list );
 			goto error;
 		}
-		_tm_branch_index = 0;
 
+		_tm_branch_index = 0;
+		/* restore the route type */
 		set_route_type( backup_route_type );
 		/* restore original avp list */
 		set_avp_list( backup_list );
@@ -365,7 +370,9 @@ static int add_uac( struct cell *t, struct sip_msg *request, str *uri,
 		do_free_proxy = 0;
 	}else {
 		proxy=uri2proxy( request->dst_uri.len ?
-			&request->dst_uri:&request->new_uri, PROTO_NONE );
+			&request->dst_uri:&request->new_uri,
+			request->force_send_socket ?
+				request->force_send_socket->proto : PROTO_NONE );
 		if (proxy==0)  {
 			ret=E_BAD_ADDRESS;
 			goto error01;
@@ -411,6 +418,17 @@ error02:
 	}
 error01:
 	post_print_uac_request( request, uri, next_hop);
+	if (ret < 0) {
+		/* destroy all the bavps added, the path vector and the destination,
+		 * since this branch will never be properly added to
+		 * the UAC list, otherwise we'll have memory leaks - razvanc */
+		if (t->uac[branch].user_avps)
+			destroy_avp_list(&t->uac[branch].user_avps);
+		if (t->uac[branch].path_vec.s)
+			shm_free(t->uac[branch].path_vec.s);
+		if (t->uac[branch].duri.s)
+			shm_free(t->uac[branch].duri.s);
+	}
 error:
 	return ret;
 }

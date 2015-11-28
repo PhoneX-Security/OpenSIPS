@@ -257,7 +257,7 @@ inline static int reverse_hex2int( char *c, int len )
 	return r;
 }
 
-inline static int int2reverse_hex( char **c, int *size, int nr )
+inline static int int2reverse_hex( char **c, int *size, unsigned int nr )
 {
 	unsigned short digit;
 
@@ -453,6 +453,9 @@ static inline int str2int(str* _s, unsigned int* _r)
 {
 	int i;
 
+	if (_s==0 || _s->s == 0 || _s->len == 0 || _r == 0)
+		return -1;
+
 	*_r = 0;
 	for(i = 0; i < _s->len; i++) {
 		if ((_s->s[i] >= '0') && (_s->s[i] <= '9')) {
@@ -473,6 +476,9 @@ static inline int str2sint(str* _s, int* _r)
 {
 	int i;
 	int s;
+
+	if (_s==0 || _s->s == 0 || _s->len == 0 || _r == 0)
+		return -1;
 
 	*_r = 0;
 	s = 1;

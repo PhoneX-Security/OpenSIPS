@@ -78,7 +78,8 @@ int dbt_check_mtime(const str *tbn, const str *dbn, time_t *mt)
 			LM_DBG("[%.*s] was updated\n", tbn->len, tbn->s);
 		}
 	} else {
-		LM_DBG("stat failed on [%.*s]\n", tbn->len, tbn->s);
+		LM_DBG("stat failed [%d, %s] on [%.*s]\n",
+			errno, strerror(errno), tbn->len, tbn->s);
 		ret = -1;
 	}
 	return ret;
@@ -265,6 +266,14 @@ dbt_table_p dbt_load_file(const str *tbn, const str *dbn)
 					colp0 = colp;
 					dtp->nrcols++;
 					c = fgetc(fin);
+
+					/* at least 1 column was found. eat all trailing spaces */
+					while (c == DBT_DELIM_C)
+						c = fgetc(fin);
+
+					/* properly load files which do not end in a newline */
+					if (c == EOF)
+						c = DBT_DELIM_R;
 				}
 				else
 					goto clean;
@@ -468,6 +477,11 @@ dbt_table_p dbt_load_file(const str *tbn, const str *dbn)
 					default:
 						goto clean;
 				}
+
+				/* do not skip last row if it does not end with a newline */
+				if (c == EOF)
+					c = DBT_DELIM_R;
+
 				if(c==DBT_DELIM)
 					c = fgetc(fin);
 				ccol++;

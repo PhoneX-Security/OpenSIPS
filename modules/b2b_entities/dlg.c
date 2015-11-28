@@ -1990,6 +1990,96 @@ int b2b_send_req(b2b_dlg_t* dlg, enum b2b_entity_type etype,
 
 static struct sip_msg dummy_msg;
 
+static int build_extra_headers_from_msg(str buf, str *extra_hdr,
+													str *new_hdrs, str *body)
+{
+	struct sip_msg req;
+	struct hdr_field *hdr;
+	int len;
+	char *p;
+
+	memset( &req, 0, sizeof(req) );
+	req.buf = buf.s;
+	req.len = buf.len;
+	if (parse_msg(buf.s, buf.len, &req)!=0) {
+		LM_CRIT("BUG - buffer parsing failed!");
+		return -1;
+	}
+	/* parse all headers */
+	if (parse_headers(&req, HDR_EOH_F, 0 )<0) {
+		LM_ERR("parse_headers failed\n");
+		goto error;
+	}
+
+	/* first calculate the total len */
+	len = extra_hdr->len;
+	for( hdr=req.headers; hdr ; hdr=hdr->next ) {
+		/* skip all headers that are by default added by build_uac_req()
+		 * We want to propagete only custom headers !!! */
+		switch(hdr->type){
+		case HDR_VIA_T:
+		case HDR_TO_T:
+		case HDR_FROM_T:
+		case HDR_ROUTE_T:
+		case HDR_CSEQ_T:
+		case HDR_CALLID_T:
+		case HDR_MAXFORWARDS_T:
+		case HDR_CONTENTLENGTH_T:
+		case HDR_USERAGENT_T:
+			break;
+		default:
+			/* count the header (includes the CRLF) */
+			len += hdr->len;
+		}
+	}
+
+	/* allocate */
+	new_hdrs->len = len;
+	new_hdrs->s = pkg_malloc( len );
+	if (new_hdrs->s==NULL) {
+		LM_ERR("failed to allocate pkg mem (needed %d)\n",len);
+		goto error;
+	}
+
+	/* copy headers */
+	for( p=new_hdrs->s,hdr=req.headers; hdr ; hdr=hdr->next ) {
+		switch(hdr->type){
+		case HDR_VIA_T:
+		case HDR_TO_T:
+		case HDR_FROM_T:
+		case HDR_ROUTE_T:
+		case HDR_CSEQ_T:
+		case HDR_CALLID_T:
+		case HDR_MAXFORWARDS_T:
+		case HDR_CONTENTLENGTH_T:
+		case HDR_USERAGENT_T:
+			break;
+		default:
+			/* copy the header (includes the CRLF) */
+			memcpy( p, hdr->name.s , hdr->len);
+			p += hdr->len;
+		}
+	}
+	/* and extra */
+	memcpy( p, extra_hdr->s, extra_hdr->len);
+
+	if (get_body( &req, body)<0) {
+		LM_ERR("failed to extract body\n");
+		pkg_free( new_hdrs->s );
+		goto error;
+	}
+
+	free_sip_msg(&req);
+
+	return 0;
+error:
+	free_sip_msg(&req);
+	new_hdrs->s = body->s = NULL;
+	new_hdrs->len = body->len = 0;
+	return -1;
+}
+
+
 void b2b_tm_cback(struct cell *t, b2b_table htable, struct tmcb_params *ps)
 {
 	struct sip_msg * msg;
@@ -2004,6 +2094,7 @@ void b2b_tm_cback(struct cell *t, b2b_table htable, struct tmcb_params *ps)
 	struct to_body* pto;
 	str to_tag, callid, from_tag;
 	str extra_headers = {NULL, 0};
+	str body = {NULL, 0};
 	struct hdr_field* hdr;
 	unsigned int method_id = 0;
 	struct cseq_body cb;
@@ -2304,32 +2395,21 @@ void b2b_tm_cback(struct cell *t, b2b_table htable, struct tmcb_params *ps)
 						lock_release(&htable[hash_index].lock);
 						goto error;
 					}
-					LM_DBG("[%.*s]\n", new_hdr->len, new_hdr->s);
-					LM_DBG("uri [%.*s] with extra_hdrs [%.*s]\n",
-						t->uac[0].uri.len, t->uac[0].uri.s,
-						t->uac[0].extra_headers.len,
-						t->uac[0].extra_headers.s);
-					extra_headers.s = (char*)pkg_malloc(new_hdr->len +
-								t->uac[0].extra_headers.len);
-					if (extra_headers.s == NULL)
-					{
-						LM_ERR("No more private memory\n");
+					LM_DBG("auth is [%.*s]\n", new_hdr->len, new_hdr->s);
+					if (build_extra_headers_from_msg(t->uac[0].request.buffer,
+							new_hdr, &extra_headers, &body) < 0 ) {
+						LM_ERR("failed to build extra msgs after auth\n");
 						dlg->state = B2B_TERMINATED;
 						lock_release(&htable[hash_index].lock);
 						goto error;
 					}
-					memcpy(extra_headers.s, new_hdr->s, new_hdr->len);
-					memcpy(extra_headers.s + new_hdr->len,
-						t->uac[0].extra_headers.s,
-						t->uac[0].extra_headers.len);
-					extra_headers.len = new_hdr->len +
-								t->uac[0].extra_headers.len;
-					LM_DBG("[%.*s]\n", extra_headers.len, extra_headers.s);
+					LM_DBG("extra is [%.*s]\n",
+						extra_headers.len, extra_headers.s);
 					pkg_free(new_hdr->s);
 					new_hdr->s = NULL; new_hdr->len = 0;
 
 					b2b_send_indlg_req(dlg, B2B_CLIENT, b2b_key, &t->method,
-							&extra_headers, &t->uac[0].body, 0);
+							&extra_headers, &body, 0);
 					pkg_free(extra_headers.s);
 
 					dlg->state = B2B_NEW_AUTH;
@@ -2526,16 +2606,15 @@ dummy_reply:
 				if(leg)
 				{
 					LM_DBG("Found existing leg  - Nothing to update\n");
-					goto done;
+				} else {
+					leg = b2b_add_leg(dlg, msg, &to_tag);
+					if(leg == NULL)
+					{
+						LM_ERR("Failed to add dialog leg\n");
+						goto error;
+					}
+					UPDATE_DBFLAG(dlg);
 				}
-
-				leg = b2b_add_leg(dlg, msg, &to_tag);
-				if(leg == NULL)
-				{
-					LM_ERR("Failed to add dialog leg\n");
-					goto error;
-				}
-				UPDATE_DBFLAG(dlg);
 				/* PRACK handling */
 				/* if the provisional reply contains a
 				 * Require: 100rel header -> send PRACK */
@@ -2739,11 +2818,24 @@ error1:
 }
 
 
+static inline int is_CT_present(struct hdr_field* headers)
+{
+	struct hdr_field* hf;
+	for (hf=headers; hf; hf=hf->next) {
+		if (hf->type == HDR_CONTENTTYPE_T) {
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
 int b2breq_complete_ehdr(str* extra_headers, str* ehdr_out, str* body,
 		str* local_contact)
 {
-	static char buf[BUF_LEN];
 	str ehdr= {NULL,0};
+	static char buf[BUF_LEN];
+	static struct sip_msg foo_msg;
 
 	if((extra_headers?extra_headers->len:0) + 14 + local_contact->len > BUF_LEN)
 	{
@@ -2760,18 +2852,33 @@ int b2breq_complete_ehdr(str* extra_headers, str* ehdr_out, str* body,
 	ehdr.len += sprintf(ehdr.s+ ehdr.len, "Contact: <%.*s>\r\n",
 		local_contact->len, local_contact->s);
 
+
+
 	/* if not present and body present add content type */
-	if(body && !strstr(ehdr.s, "Content-Type:"))
-	{
-		/* add content type header */
-		if(ehdr.len + 32 > BUF_LEN)
-		{
-			LM_ERR("Buffer too small, can not add Content-Type header\n");
+	if(body) {
+		/* build a fake sip_msg to parse the headers sip-wisely */
+		memset(&foo_msg, 0, sizeof(struct sip_msg));
+		foo_msg.len = ehdr.len;
+		foo_msg.buf = foo_msg.unparsed = ehdr.s;
+
+		if (parse_headers( &foo_msg, HDR_EOH_F, 0) == -1) {
+			LM_ERR("Failed to parse headers\n");
 			return -1;
 		}
-		memcpy(ehdr.s+ ehdr.len, "Content-Type: application/sdp\r\n", 31);
-		ehdr.len += 31;
-		ehdr.s[ehdr.len]= '\0';
+
+		if (!is_CT_present(foo_msg.headers)) {
+			/* add content type header */
+			if(ehdr.len + 32 > BUF_LEN)
+			{
+				LM_ERR("Buffer too small, can not add Content-Type header\n");
+				return -1;
+			}
+			memcpy(ehdr.s+ ehdr.len, "Content-Type: application/sdp\r\n", 31);
+			ehdr.len += 31;
+			ehdr.s[ehdr.len]= '\0';
+		}
+
+		if (foo_msg.headers) free_hdr_field_lst(foo_msg.headers);
 	}
 	*ehdr_out = ehdr;
 

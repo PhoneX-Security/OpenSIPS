@@ -195,7 +195,7 @@ int dbt_cache_check_db(str *_s)
 	while(_dcache)
 	{
 		if(_dcache->name.len == _s->len &&
-			strncasecmp(_dcache->name.s, _s->s, _s->len))
+			!strncasecmp(_dcache->name.s, _s->s, _s->len))
 		{
 			lock_release(_dbt_cachesem);
 			return 0;
@@ -295,6 +295,7 @@ dbt_table_p dbt_db_get_table(dbt_cache_p _dc, const str *_s)
 	if(_tbc) /* free old one */
 	{
 		dbt_db_del_table(_dc, _s, 0);
+
 	}
 
 	_tbc = dbt_load_file(_s, &(_dc->name));
@@ -374,6 +375,7 @@ int dbt_cache_destroy(void)
 			_tbc = _tbc->next;
 			dbt_table_free(_tbc0);
 		}
+		_dbt_cachetbl[i].dtp = NULL;
 	}
 	shm_free(_dbt_cachetbl);
 	return 0;

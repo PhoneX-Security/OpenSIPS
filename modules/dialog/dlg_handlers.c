@@ -465,6 +465,11 @@ static void dlg_onreply(struct cell* t, int type, struct tmcb_params *param)
 		}
 		return;
 	}
+	if (type==TMCB_RESPONSE_OUT) {
+		if (dlg->state == DLG_STATE_CONFIRMED_NA && replication_dests)
+			replicate_dialog_created(dlg);
+		return;
+	}
 
 	if (type==TMCB_TRANS_DELETED)
 		event = DLG_EVENT_TDEL;
@@ -531,9 +536,6 @@ static void dlg_onreply(struct cell* t, int type, struct tmcb_params *param)
 
 		/* dialog confirmed */
 		run_dlg_callbacks( DLGCB_CONFIRMED, dlg, rpl, DLG_DIR_UPSTREAM, 0);
-
-		if (replication_dests)
-			replicate_dialog_created(dlg);
 
 		if (old_state==DLG_STATE_EARLY)
 			if_update_stat(dlg_enable_stats, early_dlgs, -1);
@@ -836,7 +838,7 @@ int dlg_create_dialog(struct cell* t, struct sip_msg *req,unsigned int flags)
 {
 	struct dlg_cell *dlg;
 	str s;
-	int extra_ref;
+	int extra_ref,types;
 
 	/* module is stricly designed for dialog calls */
 	if (req->first_line.u.request.method_value!=METHOD_INVITE)
@@ -900,9 +902,14 @@ int dlg_create_dialog(struct cell* t, struct sip_msg *req,unsigned int flags)
 		goto error;
 	}
 
-	if ( d_tmb.register_tmcb( req, t,
-				TMCB_RESPONSE_PRE_OUT|TMCB_RESPONSE_FWDED|TMCB_TRANS_CANCELLED,
-				dlg_onreply, (void*)dlg, unreference_dialog_create)<0 ) {
+	types = TMCB_RESPONSE_PRE_OUT|TMCB_RESPONSE_FWDED|TMCB_TRANS_CANCELLED;
+	/* replicate dialogs after the 200 OK was fwded - speed & after all msg
+	 * processing was done ( eg. ACC ) */
+	if (replication_dests)
+		types |= TMCB_RESPONSE_OUT;
+
+	if ( d_tmb.register_tmcb( req, t,types,dlg_onreply, 
+	(void*)dlg, unreference_dialog_create)<0 ) {
 		LM_ERR("failed to register TMCB\n");
 		goto error;
 	}
@@ -925,7 +932,7 @@ int dlg_create_dialog(struct cell* t, struct sip_msg *req,unsigned int flags)
 
 	return 0;
 error:
-	unref_dlg(dlg,2);
+	unref_dlg(dlg,extra_ref);
 	dialog_cleanup( req, NULL);
 	if_update_stat(dlg_enable_stats, failed_dlgs, 1);
 	return -1;
@@ -1058,25 +1065,32 @@ void dlg_onroute(struct sip_msg* req, str *route_params, void *param)
 					return;
 				}
 				if (match_dialog(dlg,&callid,&ftag,&ttag,&dir, &dst_leg )==0){
-					LM_WARN("tight matching failed for %.*s with "
-						"callid='%.*s'/%d,"
-						" ftag='%.*s'/%d, ttag='%.*s'/%d and direction=%d\n",
-						req->first_line.u.request.method.len,
-						req->first_line.u.request.method.s,
-						callid.len, callid.s, callid.len,
-						ftag.len, ftag.s, ftag.len,
-						ttag.len, ttag.s, ttag.len, dir);
-					LM_WARN("dialog identification elements are "
-						"callid='%.*s'/%d, "
-						"caller tag='%.*s'/%d, callee tag='%.*s'/%d\n",
-						dlg->callid.len, dlg->callid.s, dlg->callid.len,
-						dlg->legs[DLG_CALLER_LEG].tag.len,
-						dlg->legs[DLG_CALLER_LEG].tag.s,
-						dlg->legs[DLG_CALLER_LEG].tag.len,
-						dlg->legs[callee_idx(dlg)].tag.len,
-						ZSW(dlg->legs[callee_idx(dlg)].tag.s),
-						dlg->legs[callee_idx(dlg)].tag.len);
+					if (!accept_replicated_dlg) {
+						/* not an error when accepting replicating dialogs -
+						   we might have generated a different h_id when
+						   accepting the replicated dialog */
+						LM_WARN("tight matching failed for %.*s with "
+							"callid='%.*s'/%d,"
+							" ftag='%.*s'/%d, ttag='%.*s'/%d and direction=%d\n",
+							req->first_line.u.request.method.len,
+							req->first_line.u.request.method.s,
+							callid.len, callid.s, callid.len,
+							ftag.len, ftag.s, ftag.len,
+							ttag.len, ttag.s, ttag.len, dir);
+						LM_WARN("dialog identification elements are "
+							"callid='%.*s'/%d, "
+							"caller tag='%.*s'/%d, callee tag='%.*s'/%d\n",
+							dlg->callid.len, dlg->callid.s, dlg->callid.len,
+							dlg->legs[DLG_CALLER_LEG].tag.len,
+							dlg->legs[DLG_CALLER_LEG].tag.s,
+							dlg->legs[DLG_CALLER_LEG].tag.len,
+							dlg->legs[callee_idx(dlg)].tag.len,
+							ZSW(dlg->legs[callee_idx(dlg)].tag.s),
+							dlg->legs[callee_idx(dlg)].tag.len);
+					}
 					unref_dlg(dlg, 1);
+					/* potentially fall through to SIP-wise dialog matching,
+					   depending on seq_match_mode */
 					dlg = NULL;
 				}
 			}
@@ -1265,15 +1279,28 @@ after_unlock5:
 				if (dlg->legs[dst_leg].last_gen_cseq) {
 
 					update_val = ++(dlg->legs[dst_leg].last_gen_cseq);
+
+					if (req->first_line.u.request.method_value == METHOD_INVITE) {
+						/* save INVITE cseq, in case any requests follow after this
+						( pings or other in-dialog requests until the ACK comes in */
+						dlg->legs[dst_leg].last_inv_gen_cseq = dlg->legs[dst_leg].last_gen_cseq;
+					}
+
 					dlg_unlock( d_table, d_entry );
 
 					if (update_msg_cseq(req,0,update_val) != 0) {
 						LM_ERR("failed to update sequential request msg cseq\n");
 						ok = 0;
 					}
-				}
-				else
+				} else {
+					if (req->first_line.u.request.method_value == METHOD_INVITE) {
+						/* we did not generate any pings yet - still we need to store the INV cseq,
+						in case there's a race between the ACK for the INVITE and sending of new pings */
+						str2int(&((struct cseq_body *)req->cseq->parsed)->number,
+						&dlg->legs[dst_leg].last_inv_gen_cseq);
+					}
 					dlg_unlock( d_table, d_entry );
+				}
 			}
 
 			if (ok) {
@@ -1284,23 +1311,24 @@ after_unlock5:
 				if (replication_dests)
 					replicate_dialog_updated(dlg);
 			}
-		}
-		else
-		{
+		} else {
 			if (dlg->flags & DLG_FLAG_PING_CALLER ||
 					dlg->flags & DLG_FLAG_PING_CALLEE) {
 
 				dlg_lock (d_table, d_entry);
 
-				if (dlg->legs[dst_leg].last_gen_cseq) {
-					update_val = dlg->legs[dst_leg].last_gen_cseq;
+				if (dlg->legs[dst_leg].last_gen_cseq ||
+				dlg->legs[dst_leg].last_inv_gen_cseq) {
+					if (dlg->legs[dst_leg].last_inv_gen_cseq)
+						update_val = dlg->legs[dst_leg].last_inv_gen_cseq;
+					else
+						update_val = dlg->legs[dst_leg].last_gen_cseq;
 					dlg_unlock( d_table, d_entry );
 
 					if (update_msg_cseq(req,0,update_val) != 0) {
 						LM_ERR("failed to update ACK msg cseq\n");
 					}
-				}
-				else
+				} else
 					dlg_unlock( d_table, d_entry );
 			}
 		}

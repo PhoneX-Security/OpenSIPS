@@ -47,6 +47,8 @@ static db_val_t   vals_cmp[3]; /* statement as in "select" and "delete" */
 /* linked list with all defined DB schemes */
 static struct db_scheme  *db_scheme_list=0;
 
+struct db_url *default_db_url = NULL;
+
 /* array of db urls */
 static struct db_url *db_urls = NULL;  /* array of database urls */
 static unsigned int no_db_urls = 0;
@@ -113,10 +115,11 @@ int add_db_url(modparam_t type, void *val)
 		return E_OUT_OF_MEM;
 	}
 
+	memset(&db_urls[no_db_urls], '\0', sizeof *db_urls);
+
 	db_urls[no_db_urls].url.s = url;
 	db_urls[no_db_urls].url.len = strlen(url);
 	db_urls[no_db_urls].idx = idx;
-	db_urls[no_db_urls].hdl = NULL;
 
 	no_db_urls++;
 
@@ -145,8 +148,22 @@ int avpops_db_bind(void)
 		}
 	}
 
-	return 0;
+	/*
+	 * we cannot catch the default DB url usage at fixup time
+	 * as we do with the other bunch of extra avpops DB URLs
+	 *
+	 * so just dig through the whole script tree
+	 */
+	if (is_script_func_used("avp_db_query", 1) ||
+		is_script_func_used("avp_db_query", 2)) {
+		if (!DB_CAPABILITY(default_db_url->dbf, DB_CAP_RAW_QUERY)) {
+			LM_ERR("driver for DB URL [default] does not support "
+				   "raw queries!\n");
+			return -1;
+		}
+	}
 
+	return 0;
 }
 
 

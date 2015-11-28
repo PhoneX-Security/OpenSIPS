@@ -120,8 +120,6 @@ static int pvc_before_check = 1;
 
 
 /* route param variable */
-extern action_elem_t *route_params;
-extern int route_params_number;
 static int pv_get_param(struct sip_msg *msg,  pv_param_t *ip, pv_value_t *res);
 static int pv_parse_param_name(pv_spec_p sp, str *in);
 
@@ -670,13 +668,8 @@ static int pv_get_contact_body(struct sip_msg *msg, pv_param_t *param,
 		return -1;
 
 	/* get all CONTACT headers */
-	if(msg->contact==NULL && parse_headers(msg, HDR_EOH_F, 0)==-1)
-	{
-		LM_DBG("no contact header\n");
-		return pv_get_null(msg, param, res);
-	}
-
-	if(!msg->contact || !msg->contact->body.s || msg->contact->body.len<=0)
+	if(parse_headers(msg, HDR_EOH_F, 0)==-1 || msg->contact==NULL ||
+	!msg->contact->body.s || msg->contact->body.len<=0)
 	{
 		LM_DBG("no contact header!\n");
 		return pv_get_null(msg, param, res);
@@ -3516,7 +3509,7 @@ done_inm:
 			goto error;
 		}
 		s.len = p - s.s;
-		if(pte->parse_name(e, &s)!=0)
+		if(pte->parse_name == NULL || pte->parse_name(e, &s)!=0)
 		{
 			LM_ERR("pvar \"%.*s\" has an invalid name param [%.*s]\n",
 					pvname.len, pvname.s, s.len, s.s);
@@ -4646,7 +4639,7 @@ static int pv_get_param(struct sip_msg *msg,  pv_param_t *ip, pv_value_t *res)
 		return -1;
 	}
 
-	if (!route_params || !route_params_number)
+	if (route_rec_level == -1 || !route_params[route_rec_level] || route_params_number[route_rec_level] == 0)
 	{
 		LM_DBG("no parameter specified for this route\n");
 		return pv_get_null(msg, ip, res);
@@ -4657,12 +4650,15 @@ static int pv_get_param(struct sip_msg *msg,  pv_param_t *ip, pv_value_t *res)
 		index = ip->pvn.u.isname.name.n;
 	} else
 	{
-		/* pvar */
+		/* pvar -> it might be another $param variable! */
+		route_rec_level--;
 		if(pv_get_spec_value(msg, (pv_spec_p)(ip->pvn.u.dname), &tv)!=0)
 		{
 			LM_ERR("cannot get spec value\n");
 			return -1;
 		}
+		route_rec_level++;
+
 		if(tv.flags&PV_VAL_NULL || tv.flags&PV_VAL_EMPTY)
 		{
 			LM_ERR("null or empty name\n");
@@ -4675,7 +4671,7 @@ static int pv_get_param(struct sip_msg *msg,  pv_param_t *ip, pv_value_t *res)
 		}
 	}
 
-	if (index < 1 || index > route_params_number)
+	if (index < 1 || index > route_params_number[route_rec_level])
 	{
 		LM_DBG("no such parameter index %d\n", index);
 		return pv_get_null(msg, ip, res);
@@ -4683,32 +4679,40 @@ static int pv_get_param(struct sip_msg *msg,  pv_param_t *ip, pv_value_t *res)
 
 	/* the parameters start at 0, whereas the index starts from 1 */
 	index--;
-	switch (route_params[index].type)
+	switch (route_params[route_rec_level][index].type)
 	{
 
+	case NULLV_ST:
+		res->rs.s = NULL;
+		res->rs.len = res->ri = 0;
+		res->flags = PV_VAL_NULL;
+		break;
+
 	case STRING_ST:
-		res->rs.s = route_params[index].u.string;
+		res->rs.s = route_params[route_rec_level][index].u.string;
 		res->rs.len = strlen(res->rs.s);
 		res->flags = PV_VAL_STR;
 		break;
 
 	case NUMBER_ST:
-		res->rs.s = int2str(route_params[index].u.number, &res->rs.len);
-		res->ri = route_params[index].u.number;
+		res->rs.s = int2str(route_params[route_rec_level][index].u.number, &res->rs.len);
+		res->ri = route_params[route_rec_level][index].u.number;
 		res->flags = PV_VAL_STR|PV_VAL_INT|PV_TYPE_INT;
 		break;
 
 	case SCRIPTVAR_ST:
-		if(pv_get_spec_value(msg, (pv_spec_p)route_params[index].u.data, res)!=0)
+		route_rec_level--;
+		if(pv_get_spec_value(msg, (pv_spec_p)route_params[route_rec_level + 1][index].u.data, res)!=0)
 		{
 			LM_ERR("cannot get spec value\n");
 			return -1;
 		}
+		route_rec_level++;
 		break;
 
 		default:
 			LM_ALERT("BUG: invalid parameter type %d\n",
-					 route_params[index].type);
+					 route_params[route_rec_level][index].type);
 			return -1;
 	}
 

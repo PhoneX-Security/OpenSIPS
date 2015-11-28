@@ -910,8 +910,11 @@ void next_state_dlg(struct dlg_cell *dlg, int event, int dir, int *old_state,
 
 	dlg_unlock( d_table, d_entry);
 
-	if (!is_replicated && replication_dests && dlg->state == DLG_STATE_DELETED)
+	 if (!is_replicated && replication_dests &&
+	(*old_state == DLG_STATE_CONFIRMED_NA || *old_state == DLG_STATE_CONFIRMED) &&
+	dlg->state == DLG_STATE_DELETED)
 		replicate_dialog_deleted(dlg);
+
 
 	LM_DBG("dialog %p changed from state %d to "
 		"state %d, due event %d\n",dlg,*old_state,*new_state,event);
@@ -1255,6 +1258,9 @@ static inline struct mi_root* process_mi_params(struct mi_root *cmd_tree,
 	}
 
 	*idx = *cnt = 0;
+
+        if (!p1->s)
+                return init_mi_tree( 400, "Invalid Call-ID specified", 25);
 
 	h_entry = dlg_hash( p1/*callid*/ );
 

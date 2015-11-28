@@ -293,30 +293,24 @@ static inline char *run_proxy( struct cpl_interpreter *intr )
 {
 	unsigned short attr_name;
 	unsigned short n;
-	int_str is_val;
 	char *kid;
 	char *p;
 	int i;
+	int timeout;
 	str *s;
 	struct location *loc;
 	str reason;
 
 	intr->proxy.ordering = PARALLEL_VAL;
 	intr->proxy.recurse = (unsigned short)cpl_env.proxy_recurse;
+	timeout = 0;
 
 	/* identify the attributes */
 	for( i=NR_OF_ATTR(intr->ip),p=ATTR_PTR(intr->ip) ; i>0 ; i-- ) {
 		get_basic_attr( p, attr_name, n, intr, script_error);
 		switch (attr_name) {
 			case TIMEOUT_ATTR:
-				if (cpl_env.timer_avp >= 0) {
-					is_val.n = n;
-					if ( add_avp( cpl_env.timer_avp_type,
-					cpl_env.timer_avp, is_val)<0) {
-						LM_ERR("unable to set timer AVP\n");
-						/* continue */
-					}
-				}
+				timeout = (int)n;
 				break;
 			case RECURSE_ATTR:
 				switch (n) {
@@ -490,6 +484,9 @@ static inline char *run_proxy( struct cpl_interpreter *intr )
 		}
 		intr->flags |= CPL_DO_NOT_FREE;
 	}
+
+	cpl_fct.tmb.t_gett()->fr_inv_timeout = timeout;
+
 
 	switch (intr->proxy.ordering) {
 		case FIRSTONLY_VAL:

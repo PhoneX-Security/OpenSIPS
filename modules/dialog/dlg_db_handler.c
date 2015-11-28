@@ -582,7 +582,7 @@ static int load_dialog_info_from_db(int dlg_hash_size)
 			next_id = d_table->entries[dlg->h_entry].next_id;
 
 			d_table->entries[dlg->h_entry].next_id =
-				(next_id < dlg->h_id) ? (dlg->h_id+1) : next_id;
+				(next_id <= dlg->h_id) ? (dlg->h_id+1) : next_id;
 
 			GET_STR_VALUE(to_tag, values, 5, 1, 1);
 
@@ -951,10 +951,11 @@ int update_dialog_dbinfo(struct dlg_cell * cell)
 		VAL_TYPE(values+1) = VAL_TYPE(values+2) = VAL_TYPE(values+3) =
 		VAL_TYPE(values+4) = VAL_TYPE(values+5) = VAL_TYPE(values+6) =
 		VAL_TYPE(values+7) = VAL_TYPE(values+9) = VAL_TYPE(values+10) =
-		VAL_TYPE(values+13) = VAL_TYPE(values+14) =
-		VAL_TYPE(values+18) = VAL_TYPE(values+19) = VAL_TYPE(values+21) =
-		VAL_TYPE(values+22) = VAL_TYPE(values+23) =
+		VAL_TYPE(values+13) = VAL_TYPE(values+14) = VAL_TYPE(values+19) =
+		VAL_TYPE(values+21) = VAL_TYPE(values+22) = VAL_TYPE(values+23) =
 		VAL_TYPE(values+24) = DB_STR;
+
+		VAL_TYPE(values+18) = DB_BLOB;
 
 		/* lock the entry */
 		entry = (d_table->entries)[cell->h_entry];
@@ -1017,8 +1018,8 @@ int update_dialog_dbinfo(struct dlg_cell * cell)
 		VAL_TYPE(values+16) = VAL_TYPE(values+17) = VAL_TYPE(values+20) =
 		DB_INT;
 
-		VAL_TYPE(values+13) = VAL_TYPE(values+14) =
-		VAL_TYPE(values+18) = VAL_TYPE(values+19) = DB_STR;
+		VAL_TYPE(values+13) = VAL_TYPE(values+14) = VAL_TYPE(values+19) = DB_STR;
+		VAL_TYPE(values+18) = DB_BLOB;
 
 		/* lock the entry */
 		entry = (d_table->entries)[cell->h_entry];
@@ -1051,12 +1052,16 @@ int update_dialog_dbinfo(struct dlg_cell * cell)
 		cell->flags &= ~(DLG_FLAG_CHANGED|DLG_FLAG_VP_CHANGED);
 	} else if (cell->flags & DLG_FLAG_VP_CHANGED) {
 		VAL_TYPE(values) = DB_BIGINT;
+		VAL_TYPE(values+18) = DB_BLOB;
+		VAL_TYPE(values+19) = DB_STR;
 		VAL_TYPE(values+20) = DB_INT;
-		VAL_TYPE(values+18) = VAL_TYPE(values+19) = DB_STR;
 
 		/* lock the entry */
 		entry = (d_table->entries)[cell->h_entry];
 		dlg_lock( d_table, &entry);
+
+		SET_BIGINT_VALUE(values, (((long long)cell->h_entry << 32) |
+					 cell->h_id));
 
 		set_final_update_cols(values+18, cell, 0);
 
@@ -1154,7 +1159,8 @@ str* write_dialog_vars( struct dlg_val *vars)
 	return &o;
 }
 
-
+/* needs to be run under the dialog lock , since it iterates on the profile links, which might get
+ * deallocatd if the dialog ends */
 str* write_dialog_profiles( struct dlg_profile_link *links)
 {
 	static str o = {NULL,0},cached_marker={"/s",2};
@@ -1289,7 +1295,9 @@ void dialog_update_db(unsigned int ticks, void * param)
 	VAL_TYPE(values+7) = VAL_TYPE(values+9) = VAL_TYPE(values+10) =
 	VAL_TYPE(values+11) = VAL_TYPE(values+12) = VAL_TYPE(values+13) =
 	VAL_TYPE(values+14) = VAL_TYPE(values+17) = VAL_TYPE(values+18) =
-	VAL_TYPE(values+21) = VAL_TYPE(values+22) = DB_STR;
+	VAL_TYPE(values+22) = DB_STR;
+
+	VAL_TYPE(values+21) = DB_BLOB;
 
 	for(index = 0; index< d_table->size; index++){
 
@@ -1580,7 +1588,7 @@ static int sync_dlg_db_mem(void)
 				next_id = d_table->entries[dlg->h_entry].next_id;
 
 				d_table->entries[dlg->h_entry].next_id =
-					(next_id < dlg->h_id) ? (dlg->h_id+1) : next_id;
+					(next_id <= dlg->h_id) ? (dlg->h_id+1) : next_id;
 
 				dlg->start_ts	= VAL_INT(values+6);
 
@@ -1943,7 +1951,9 @@ static int restore_dlg_db(void)
 	VAL_TYPE(values+7) = VAL_TYPE(values+9) = VAL_TYPE(values+10) =
 	VAL_TYPE(values+11) = VAL_TYPE(values+12) = VAL_TYPE(values+13) =
 	VAL_TYPE(values+14) = VAL_TYPE(values+17) = VAL_TYPE(values+18) =
-	VAL_TYPE(values+21) = VAL_TYPE(values+22) = DB_STR;
+	VAL_TYPE(values+22) = DB_STR;
+
+	VAL_TYPE(values+21) = DB_BLOB;
 
 	if (remove_all_dialogs_from_db() != 0) {
 		LM_ERR("Failed to truncate dialog table!\n");

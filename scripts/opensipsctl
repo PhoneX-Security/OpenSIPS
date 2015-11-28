@@ -23,8 +23,11 @@ if [ -f ~/.opensipsctlrc ]; then
 fi
 
 if [ $TEST = "true" ]; then
+	ETCDIR=etc/
 	if [ -f ./opensipsctlrc ]; then
 		. ./opensipsctlrc
+	elif [ -f scripts/opensipsctlrc ]; then
+		. scripts/opensipsctlrc
 	fi
 fi
 
@@ -44,6 +47,9 @@ fi
 # you better set the variables in ~/.opensipsctlrc
 if [ -z $ETCDIR ] ; then
 	ETCDIR="/usr/local/etc/opensips"
+else
+	# Fix relative paths
+	[ "${ETCDIR:0:1}" != "/" ] && ETCDIR=$PWD/$ETCDIR
 fi
 
 ### version for this script
@@ -632,7 +638,7 @@ avpops() {
 		minfo "see '$0 avp help'"
 		exit 1
 	fi
-	if [ $1 = "avp" ] ; then
+	if [ "$1" = "avp" ] ; then
 		shift
 	else
 		merr "avp - unknown command $1"
@@ -1634,20 +1640,20 @@ dialplan() {
 					exit 1
 			esac
 			DIALPLAN_MATCH_EXP=$4
-			DIALPLAN_MATCH_LEN=$5
+			DIALPLAN_MATCH_FLAGS=$5
 			DIALPLAN_SUBST_EXP=$6
 			DIALPLAN_REPL_EXP=$7
 			DIALPLAN_ATTRS=$8
 
 			QUERY="insert into $DIALPLAN_TABLE \
 				( $DIALPLAN_DPID_COLUMN, $DIALPLAN_PR_COLUMN, $DIALPLAN_MATCH_OP_COLUMN, \
-					$DIALPLAN_MATCH_EXP_COLUMN, $DIALPLAN_MATCH_LEN_COLUMN, \
+					$DIALPLAN_MATCH_EXP_COLUMN, $DIALPLAN_MATCH_FLAGS_COLUMN, \
 					$DIALPLAN_SUBST_EXP_COLUMN, $DIALPLAN_REPL_EXP_COLUMN, \
 					$DIALPLAN_ATTRS_COLUMN ) \
 				VALUES ( $DIALPLAN_DPID, $DIALPLAN_PR, $DIALPLAN_MATCH_OP, \
-					'$DIALPLAN_MATCH_EXP', $DIALPLAN_MATCH_LEN, '$DIALPLAN_SUBST_EXP', \
+					'$DIALPLAN_MATCH_EXP', $DIALPLAN_MATCH_FLAGS, '$DIALPLAN_SUBST_EXP', \
 					'$DIALPLAN_REPL_EXP', '$DIALPLAN_ATTRS')";
-			#mecho "$QUERY"
+			mecho "$QUERY"
 			$DBCMD "$QUERY"
 
 			if [ $? -ne 0 ] ; then
@@ -1834,7 +1840,7 @@ opensips_start() {
 	echo
 	minfo "Starting OpenSIPS : "
 	if [ -r $PID_FILE ] ; then
-		if [ -d /proc/$(<$PID_FILE) ] ; then
+		if [ -d /proc/$(cat $PID_FILE) ] ; then
 			ps -ef | $EGREP opensips
 			ls -l $PID_FILE
 			minfo "PID file exists ($PID_FILE)! OpenSIPS already running?"
@@ -2354,19 +2360,19 @@ usrloc() {
 
 	require_ctlengine
 
-	if [ $1 = "alias" ] ; then
+	if [ "$1" = "alias" ] ; then
 		USRLOC_TABLE="$ALS_TABLE"
 		if [ -z "$USRLOC_TABLE" ] ; then
 			USRLOC_TABLE=aliases
 		fi
 		CHECK_SUB=1
-	elif [ $1 = "ul" ] ; then
+	elif [ "$1" = "ul" ] ; then
 		USRLOC_TABLE="$UL_TABLE"
 		if [ -z $USRLOC_TABLE ] ; then
 			USRLOC_TABLE=location
 		fi
 		CHECK_SUB=0
-	elif [ $1 = "usrloc" ] ; then
+	elif [ "$1" = "usrloc" ] ; then
 		USRLOC_TABLE="$UL_TABLE"
 		if [ -z $USRLOC_TABLE ] ; then
 			USRLOC_TABLE=location
@@ -2379,10 +2385,10 @@ usrloc() {
 	fi
 	shift
 
-	case $1 in 
+	case "$1" in 
 		show)
 			if [ $# -eq 2 ] ; then
-				if [ $2 = "--brief" ] ; then
+				if [ "$2" = "--brief" ] ; then
 					$CTLCMD ul_dump brief
 				else
 					set_user $2
@@ -2480,7 +2486,7 @@ usrloc() {
 
 tls_ca() {
 
-	if [ $1 = "rootCA" ] ; then
+	if [ "$1" = "rootCA" ] ; then
 		if [ -z $2 ] ; then
 			# use default
 			CA_BASE=$ETCDIR/tls
@@ -2535,7 +2541,7 @@ tls_ca() {
 		minfo "Private key can be found in $CA_PATH/private/cakey.pem"
 		minfo "Certificate can be found in $CA_PATH/cacert.pem"
 
-	elif [ $1 = "userCERT" ] ; then
+	elif [ "$1" = "userCERT" ] ; then
 
 		if [ -z $2 ] ; then
 			merr "Missing user name parameter"
@@ -2612,7 +2618,7 @@ tls_ca() {
 		minfo "CA-List is locate at $USER_DIR/$USER-calist.pem "
 
 	else
-		merr "unknown TLS command $1"
+		[ -n "$1" ] && merr "unknown TLS command: \"$1\""
 		usage_tls
 		exit 1
 	fi

@@ -93,6 +93,7 @@ static db_func_t dr_dbf;        /* DB functions */
 
 /* current dr data - pointer to a pointer in shm */
 static rt_data_t **rdata = 0;
+static unsigned int* ongoing_reload = 0;
 
 
 /* internal AVP used to store serial RURIs */
@@ -164,6 +165,7 @@ int tree_size = 0;
 int inode = 0;
 int unode = 0;
 static str attrs_empty = str_init("");
+static int no_concurrent_reload = 0;
 
 /* reader-writers lock for reloading the data */
 static rw_lock_t *ref_lock = NULL;
@@ -305,8 +307,9 @@ static param_export_t params[] = {
 	{"probing_interval", INT_PARAM, &dr_prob_interval         },
 	{"probing_method",   STR_PARAM, &dr_probe_method.s        },
 	{"probing_from",     STR_PARAM, &dr_probe_from.s          },
-	{"probing_reply_codes",STR_PARAM, &dr_probe_replies.s     },
-	{"persistent_state", INT_PARAM, &dr_persistent_state      },
+	{"probing_reply_codes", STR_PARAM, &dr_probe_replies.s       },
+	{"persistent_state",    INT_PARAM, &dr_persistent_state      },
+	{"no_concurrent_reload",INT_PARAM, &no_concurrent_reload     },
 	{0, 0, 0}
 };
 
@@ -579,11 +582,22 @@ static inline int dr_reload_data( void )
 	pgw_t *gw, *old_gw;
 	pcr_t *cr, *old_cr;
 
+	if (no_concurrent_reload) {
+		lock_get( ref_lock->lock );
+		if (*ongoing_reload) {
+			lock_release( ref_lock->lock );
+			LM_WARN("Reload already in progress, discarding this one\n");
+			return -2;
+		}
+		*ongoing_reload = 1;
+		lock_release( ref_lock->lock );
+	}
+
 	new_data = dr_load_routing_info( &dr_dbf, db_hdl,
 		&drd_table, &drc_table, &drr_table, dr_persistent_state);
 	if ( new_data==0 ) {
 		LM_CRIT("failed to load routing info\n");
-		return -1;
+		goto error;
 	}
 
 	lock_start_write( ref_lock );
@@ -621,7 +635,14 @@ static inline int dr_reload_data( void )
 	/* generate new blacklist from the routing info */
 	populate_dr_bls((*rdata)->pgw_l);
 
+	if (no_concurrent_reload)
+		*ongoing_reload = 0;
 	return 0;
+
+error:
+	if (no_concurrent_reload)
+		*ongoing_reload = 0;
+	return -1;
 }
 
 
@@ -746,6 +767,15 @@ static int dr_init(void)
 		return E_CFG;
 	}
 
+	if (no_concurrent_reload) {
+		ongoing_reload = (unsigned int *)shm_malloc( sizeof(unsigned int) );
+		if (ongoing_reload==NULL) {
+			LM_CRIT("failed to get shm mem for reload tracker\n");
+			goto error;
+		}
+		*ongoing_reload = 0;
+	}
+
 	/* data pointer in shm */
 	rdata = (rt_data_t**)shm_malloc( sizeof(rt_data_t*) );
 	if (rdata==0) {
@@ -817,6 +847,10 @@ static int dr_init(void)
 
 	return 0;
 error:
+	if (ongoing_reload) {
+		shm_free(ongoing_reload);
+		ongoing_reload = 0;
+	}
 	if (ref_lock) {
 		lock_destroy_rw( ref_lock );
 		ref_lock = 0;
@@ -891,6 +925,12 @@ static int dr_exit(void)
 		ref_lock = 0;
 	}
 
+	/* destroy tracker for reloads */
+	if (ongoing_reload) {
+		shm_free(ongoing_reload);
+		ongoing_reload = 0;
+	}
+
 	/* destroy blacklists */
 	destroy_dr_bls();
 
@@ -905,14 +945,14 @@ static struct mi_root* dr_reload_cmd(struct mi_root *cmd_tree, void *param)
 
 	LM_INFO("dr_reload MI command received!\n");
 
-	if ( (n=dr_reload_data())!=0 ) {
+	if ( (n=dr_reload_data())<0 ) {
+		if (n==-2)
+			return init_mi_tree(500, MI_SSTR("Reload already in progress") );
 		LM_CRIT("failed to load routing data\n");
-		goto error;
+		return init_mi_tree( 500, MI_SSTR("Failed to reload"));
 	}
 
 	return init_mi_tree( 200, MI_OK_S, MI_OK_LEN);
-error:
-	return init_mi_tree( 500, "Failed to reload",16);
 }
 
 
@@ -1520,21 +1560,21 @@ static int do_routing(struct sip_msg* msg, dr_group_t *drg, int flags,
 	if ( !(flags & DR_PARAM_INTERNAL_TRIGGERED) ) {
 		/* not internally triggered, so get data from SIP msg */
 
-		/* get the username from FROM_HDR */
-		if (parse_from_header(msg)!=0) {
-			LM_ERR("unable to parse from hdr\n");
-			goto error1;
-		}
-		from = (struct to_body*)msg->from->parsed;
-		/* parse uri */
-		if (parse_uri( from->uri.s, from->uri.len, &uri)!=0) {
-			LM_ERR("unable to parse from uri\n");
-			goto error1;
-		}
-
 		/* get user's routing group */
 		if(drg==NULL)
 		{
+			/* get the username from FROM_HDR */
+			if (parse_from_header(msg)!=0) {
+				LM_ERR("unable to parse from hdr\n");
+				goto error1;
+			}
+			from = (struct to_body*)msg->from->parsed;
+			/* parse uri */
+			if (parse_uri( from->uri.s, from->uri.len, &uri)!=0) {
+				LM_ERR("unable to parse from uri\n");
+				goto error1;
+			}
+
 			grp_id = get_group_id( &uri );
 			if (grp_id<0) {
 				LM_ERR("failed to get group id\n");
@@ -1942,10 +1982,11 @@ static int route2_carrier(struct sip_msg* msg, char* cr_str,
 	pgw_list_t *cdst;
 	pcr_t *cr;
 	pv_value_t pv_val;
-	str *ruri, id;
+	str ruri, id;
 	str next_carrier_attrs = {NULL, 0};
 	str next_gw_attrs = {NULL, 0};
 	int j,n;
+	char *ruri_buf= NULL;
 
 	if ( (*rdata)==0 || (*rdata)->pgw_l==0 ) {
 		LM_DBG("empty routing table\n");
@@ -1977,11 +2018,19 @@ static int route2_carrier(struct sip_msg* msg, char* cr_str,
 		destroy_avps( 0, rule_prefix_avp, 1);
 
 	/* get the RURI */
-	ruri = GET_RURI(msg);
-	/* parse ruri */
-	if (parse_uri( ruri->s, ruri->len, &uri)!=0) {
-		LM_ERR("unable to parse RURI\n");
+	ruri = *GET_RURI(msg);
+	ruri_buf = (char*)pkg_malloc(ruri.len);
+	if (ruri_buf==NULL) {
+		LM_ERR("no more pkg mem (needed %d)\n",ruri.len);
 		return -1;
+	}
+	memcpy(ruri_buf, ruri.s, ruri.len);
+	ruri.s = ruri_buf;
+
+	/* parse ruri */
+	if (parse_uri( ruri.s, ruri.len, &uri)!=0) {
+		LM_ERR("unable to parse RURI\n");
+		goto error_free;
 	}
 
 	/* ref the data for reading */
@@ -2075,10 +2124,13 @@ no_gws:
 	/* we are done reading -> unref the data */
 	lock_stop_read( ref_lock );
 
+	if (ruri_buf) pkg_free(ruri_buf);
 	return 1;
 error:
 	/* we are done reading -> unref the data */
 	lock_stop_read( ref_lock );
+error_free:
+	if (ruri_buf) pkg_free(ruri_buf);
 	return -1;
 }
 
@@ -2088,9 +2140,9 @@ static int route2_gw(struct sip_msg* msg, char* gw_str, char* gw_att_pv)
 	struct sip_uri  uri;
 	pgw_t *gw;
 	pv_value_t pv_val;
-	str *ruri, ids, id;
+	str ruri, ids, id;
 	str next_gw_attrs = {NULL, 0};
-	char *p;
+	char *p,*ruri_buf;
 	int idx;
 
 	if ( (*rdata)==0 || (*rdata)->pgw_l==0 ) {
@@ -2112,11 +2164,19 @@ static int route2_gw(struct sip_msg* msg, char* gw_str, char* gw_att_pv)
 	}
 
 	/* get the RURI */
-	ruri = GET_RURI(msg);
-	/* parse ruri */
-	if (parse_uri( ruri->s, ruri->len, &uri)!=0) {
-		LM_ERR("unable to parse RURI\n");
+	ruri = *GET_RURI(msg);
+	ruri_buf = (char*)pkg_malloc(ruri.len);
+	if (ruri_buf==NULL) {
+		LM_ERR("no more pkg mem (needed %d)\n",ruri.len);
 		return -1;
+	}
+	memcpy(ruri_buf, ruri.s, ruri.len);
+	ruri.s = ruri_buf;
+
+	/* parse ruri */
+	if (parse_uri( ruri.s, ruri.len, &uri)!=0) {
+		LM_ERR("unable to parse RURI\n");
+		goto error_free;
 	}
 
 	/* ref the data for reading */
@@ -2136,7 +2196,7 @@ static int route2_gw(struct sip_msg* msg, char* gw_str, char* gw_att_pv)
 		if (id.len<=0) {
 			LM_ERR("empty slot\n");
 			lock_stop_read( ref_lock );
-			return -1;
+			goto error_free;
 		} else {
 			LM_DBG("found and looking for gw id <%.*s>,len=%d\n",id.len, id.s, id.len);
 			gw = get_gw_by_id( (*rdata)->pgw_l, &id );
@@ -2160,7 +2220,7 @@ static int route2_gw(struct sip_msg* msg, char* gw_str, char* gw_att_pv)
 
 	if ( idx==0 ) {
 		LM_ERR("no GW added at all\n");
-		return -1;
+		goto error_free;
 	}
 
 	if (gw_attrs_spec) {
@@ -2168,11 +2228,15 @@ static int route2_gw(struct sip_msg* msg, char* gw_str, char* gw_att_pv)
 		pv_val.rs = !next_gw_attrs.s ? attrs_empty : next_gw_attrs;
 		if (pv_set_value(msg, gw_attrs_spec, 0, &pv_val) != 0) {
 			LM_ERR("failed to set value for gateway attrs pvar\n");
-			return -1;
+			goto error_free;
 		}
 	}
 
+	if (ruri_buf) pkg_free(ruri_buf);
 	return 1;
+error_free:
+	if (ruri_buf) pkg_free(ruri_buf);
+	return -1;
 }
 
 

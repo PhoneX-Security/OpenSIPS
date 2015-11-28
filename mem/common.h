@@ -1,10 +1,5 @@
 /*
- * $Id$
- *
- * UNIXODBC module
- *
- * Copyright (C) 2005-2006 Marco Lorrai
- * Copyright (C) 2008 1&1 Internet AG
+ * Copyright (C) 2015 OpenSIPS Solutions
  *
  * This file is part of opensips, a free SIP server.
  *
@@ -22,30 +17,33 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *
  * History:
  * --------
- *  2005-12-01  initial commit (chgen)
- *  2006-04-04  simplified link list (sgupta)
- *  2006-05-05  removed static allocation of 1k per column data (sgupta)
  */
 
-#ifndef _UNIXODBC_LIST_H_
-#define _UNIXODBC_LIST_H_
+#ifndef mem_common_h
+#define mem_common_h
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "con.h"
+#	ifdef VQ_MALLOC
+#		include "vq_malloc.h"
+		extern struct vqm_block* mem_block;
+		extern struct vqm_block* shm_block;
+#	elif defined F_MALLOC
+#		include "f_malloc.h"
+		extern struct fm_block* mem_block;
+		extern struct fm_block* shm_block;
+#	elif defined HP_MALLOC
+#		include "hp_malloc.h"
+		extern struct hp_block* mem_block;
+		extern struct hp_block* shm_block;
+#   else
+#		include "q_malloc.h"
+		extern struct qm_block* mem_block;
+		extern struct qm_block* shm_block;
+#	endif
 
-typedef struct list
-{
-	struct list* next;
-	char** data;
-	unsigned long* lengths;
-	int rownum;
-} list;
-
-int db_unixodbc_list_insert(list** start, list** link, int n, strn* value);
-void db_unixodbc_list_destroy(list* link);
+extern int mem_warming_enabled;
+extern char *mem_warming_pattern_file;
+extern int mem_warming_percentage;
 
 #endif

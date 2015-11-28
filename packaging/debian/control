@@ -3,8 +3,8 @@ Section: net
 Priority: optional
 Maintainer: Bogdan Iancu <bogdan@opensips.org>
 Uploaders: Bogdan Iancu <bogdan@opensips.org>
-Build-Depends: debhelper (>= 5), dpatch, libmysqlclient15-dev, libexpat1-dev, libxml2-dev, libpq-dev, libradiusclient-ng-dev, flex, bison, zlib1g-dev, unixodbc-dev, libxmlrpc-c3-dev, libperl-dev, libsnmp-dev, dpkg-dev (>= 1.13.19), libdb-dev (>= 4.6.19), xsltproc, libconfuse-dev, libldap2-dev, libcurl4-gnutls-dev, libgeoip-dev (>= 1.4.4), libpcre3-dev, libmemcached-dev, libjson0-dev, libmicrohttpd-dev, libhiredis-dev, librabbitmq-dev, liblua5.1-dev, libncurses5-dev, libmemcache-dev
-Standards-Version: 3.9.1
+Build-Depends: debhelper (>= 9), libmysqlclient-dev, libexpat1-dev, libxml2-dev, libpq-dev, flex, bison, zlib1g-dev, unixodbc-dev, libxmlrpc-core-c3-dev, libperl-dev, libsnmp-dev, dpkg-dev (>= 1.16.1.1), libdb-dev (>= 4.6.19), xsltproc, libconfuse-dev, libldap2-dev, libcurl4-gnutls-dev, libgeoip-dev (>= 1.4.4), libpcre3-dev, libmemcached-dev, libjson0-dev, libmicrohttpd-dev, libhiredis-dev, librabbitmq-dev, liblua5.1-dev, libncurses5-dev, libfreeradius-client-dev | libradiusclient-ng-dev, libjson0-dev, libsctp-dev
+Standards-Version: 3.9.5
 Homepage: http://www.opensips.org/
 
 Package: opensips
@@ -124,6 +124,17 @@ Description: XMLRPC support for OpenSIPS's Management Interface
  per second even on low-budget hardware.
  .
  This package provides the XMLRPC transport implementation for OpenSIPS's
+ Management Interface.
+
+Package: opensips-xmlrpcng-module
+Architecture: any
+Depends: ${shlibs:Depends}, opensips (= ${binary:Version})
+Description: XMLRPC support for OpenSIPS's Management Interface
+ OpenSIPS is a very fast and flexible SIP (RFC3261)
+ server. Written entirely in C, OpenSIPS can handle thousands calls
+ per second even on low-budget hardware.
+ .
+ This package provides another XMLRPC transport implementation for OpenSIPS's
  Management Interface.
 
 Package: opensips-perl-modules
@@ -338,3 +349,13 @@ Description: HTTP transport layer and Management Interface for OpenSIPS.
  .
  This package provides an HTTP transport layer and Management Interface for
  OpenSIPS.
+
+Package: opensips-restclient-module
+Architecture: any
+Depends: opensips (= ${binary:Version}), libcurl4-gnutls-dev
+Description: REST client module for OpenSIPS
+ OpenSIPS is a very fast and flexible SIP (RFC3261)
+ server. Written entirely in C, OpenSIPS can handle thousands calls
+ per second even on low-budget hardware.
+ .
+ This package provides the REST client support for OpenSIPS.

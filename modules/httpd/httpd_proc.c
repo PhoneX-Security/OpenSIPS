@@ -291,6 +291,7 @@ int getConnectionHeader(void *cls, enum MHD_ValueKind kind,
 	struct post_request *pr = (struct post_request*)cls;
 	str content_length;
 	unsigned int len;
+	char *p, bk;
 
 	if (cls == NULL) {
 		LM_ERR("Unable to store return data\n");
@@ -313,12 +314,19 @@ int getConnectionHeader(void *cls, enum MHD_ValueKind kind,
 	}
 	if (strcasecmp("Content-Type", key) == 0) {
 		LM_DBG("Content-Type=%s\n", value);
+		/* extract only the mime */
+		if ( (p=strchr(value, ';'))!=NULL ) {
+			while( p>value && (*(p-1)==' ' || *(p-1)=='\t') ) p--;
+			bk = *p;
+			*p = 0;
+		}
 		if (strcasecmp("text/xml", value) == 0)
 			pr->content_type = HTTPD_TEXT_XML_CNT_TYPE;
 		else if (strcasecmp("application/json", value) == 0)
 			pr->content_type = HTTPD_APPLICATION_JSON_CNT_TYPE;
 		else
 			pr->content_type = HTTPD_UNKNOWN_CNT_TYPE;
+		if (p) *p = bk;
 		goto done;
 	}
 	if (strcasecmp("Content-Length", key) == 0) {
@@ -414,11 +422,6 @@ int answer_to_connection (void *cls, struct MHD_Connection *connection,
 			return MHD_NO;
 		}
 		memset(pr, 0, sizeof(struct post_request));
-		pr->p_list = slinkedl_init(&httpd_alloc, &httpd_free);
-		if (pr->p_list==NULL) {
-			LM_ERR("oom while allocating list\n");
-			return MHD_NO;
-		}
 		*con_cls = pr;
 		pr = NULL;
 	}
@@ -426,6 +429,11 @@ int answer_to_connection (void *cls, struct MHD_Connection *connection,
 	if(strncmp(method, "POST", 4)==0) {
 		if(pr == NULL){
 			pr = *con_cls;
+			pr->p_list = slinkedl_init(&httpd_alloc, &httpd_free);
+			if (pr->p_list==NULL) {
+				LM_ERR("oom while allocating list\n");
+				return MHD_NO;
+			}
 			LM_DBG("running MHD_create_post_processor\n");
 			pr->pp = MHD_create_post_processor(connection,
 											post_buf_size,

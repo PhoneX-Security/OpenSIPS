@@ -195,11 +195,11 @@ int tcp_max_msg_time = TCP_CHILD_MAX_MSG_TIME;	/* Max number of seconds that
 												   will lead to the connection to
 												   closed */
 int tcp_async = 0;	/* 1 if TCP connect & write should be async */
-int tcp_async_local_connect_timeout = 10000; /* Number of microseconds that a
+int tcp_async_local_connect_timeout = 100; /* Number of miliseconds that a
 									worker will block waiting for a local
 									connect - if connect op exceeds this, it
 									will get passed to TCP main*/
-int tcp_async_local_write_timeout = 10000; /* Number of microseconds that a
+int tcp_async_local_write_timeout = 10; /* Number of miliseconds that a
 									worker will block waiting for a local
 									write - if write op exceeds this, it
 									will get passed to TCP main*/
@@ -338,19 +338,6 @@ unsigned int shm_secondary_hash_size = DEFAULT_SHM_SECONDARY_HASH_SIZE;
 
 /* packaged memory (in MB) */
 unsigned long pkg_mem_size=PKG_MEM_SIZE * 1024 * 1024;
-
-/*
- * adaptive image of OpenSIPS's memory usage during runtime
- * used to fragment the shared memory pool at daemon startup
- */
-char *mem_warming_pattern_file;
-int mem_warming_enabled;
-
-/*
- * percentage of shared memory which will be fragmented at startup
- * common values are between [0, 75]
- */
-int mem_warming_percentage = -1;
 
 
 /* export command-line to anywhere else */
@@ -1448,16 +1435,7 @@ try_again:
 		return 0;
 	}
 
-
 	time(&startup_time);
-
-	if (mem_warming_enabled) {
-		if (!mem_warming_pattern_file)
-			mem_warming_pattern_file = MEM_WARMING_DEFAULT_PATTERN_FILE;
-
-		if (mem_warming_percentage == -1)
-			mem_warming_percentage = MEM_WARMING_DEFAULT_PERCENTAGE;
-	}
 
 	/*init shm mallocs
 	 *  this must be here

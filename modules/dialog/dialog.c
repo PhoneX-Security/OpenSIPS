@@ -120,8 +120,8 @@ extern int last_dst_leg;
 str cdb_url = {0,0};
 
 /* dialog replication using the bpi interface */
-int accept_replicated_dlg;
-struct replication_dest *replication_dests;
+int accept_replicated_dlg=0;
+struct replication_dest *replication_dests=NULL;
 
 static int pv_get_dlg_count( struct sip_msg *msg, pv_param_t *param,
 		pv_value_t *res);
@@ -177,9 +177,9 @@ static cmd_export_t cmds[]={
 	{"set_dlg_profile", (cmd_function)w_set_dlg_profile,  2,fixup_profile,
 			0, REQUEST_ROUTE| FAILURE_ROUTE | ONREPLY_ROUTE | BRANCH_ROUTE },
 	{"unset_dlg_profile", (cmd_function)w_unset_dlg_profile,1,fixup_profile,
-			0, FAILURE_ROUTE | ONREPLY_ROUTE | BRANCH_ROUTE },
+			0, REQUEST_ROUTE| FAILURE_ROUTE | ONREPLY_ROUTE | BRANCH_ROUTE },
 	{"unset_dlg_profile", (cmd_function)w_unset_dlg_profile,2,fixup_profile,
-			0, FAILURE_ROUTE | ONREPLY_ROUTE | BRANCH_ROUTE },
+			0, REQUEST_ROUTE| FAILURE_ROUTE | ONREPLY_ROUTE | BRANCH_ROUTE },
 	{"is_in_profile", (cmd_function)w_is_in_profile,      1,fixup_profile,
 			0, REQUEST_ROUTE| FAILURE_ROUTE | ONREPLY_ROUTE |
 			BRANCH_ROUTE | LOCAL_ROUTE },
@@ -259,6 +259,7 @@ static param_export_t mod_params[]={
 	{ "profiles_column",       STR_PARAM, &profiles_column.s        },
 	{ "vars_column",           STR_PARAM, &vars_column.s            },
 	{ "sflags_column",         STR_PARAM, &sflags_column.s          },
+	{ "flags_column",          STR_PARAM, &flags_column.s           },
 	{ "db_update_period",      INT_PARAM, &db_update_period         },
 	{ "profiles_with_value",   STR_PARAM, &profiles_wv_s            },
 	{ "profiles_no_value",     STR_PARAM, &profiles_nv_s            },
@@ -641,6 +642,7 @@ static int mod_init(void)
 	profiles_column.len = strlen(profiles_column.s);
 	vars_column.len = strlen(vars_column.s);
 	sflags_column.len = strlen(sflags_column.s);
+	flags_column.len = strlen(flags_column.s);
 	dialog_table_name.len = strlen(dialog_table_name.s);
 
 	/* param checkings */
@@ -827,11 +829,7 @@ static int mod_init(void)
 		run_load_callbacks();
 	}
 
-	/* if profiles should be kept in cachedb's */
-
-	/* do not destroy callbacks - will need them later for syncing new dialogs
-	destroy_dlg_callbacks( DLGCB_LOADED );
-	*/
+	mark_dlg_loaded_callbacks_run();
 	destroy_cachedb(0);
 
 	return 0;
@@ -1569,7 +1567,6 @@ int pv_set_dlg_timeout(struct sip_msg *msg, pv_param_t *param,
 		return -1;
 	}
 	if ((dlg = get_current_dialog()) != NULL) {
-
 		dlg_lock_dlg(dlg);
 		dlg->lifetime = timeout;
 		/* update now only if realtime and the dialog is confirmed */
@@ -1577,8 +1574,11 @@ int pv_set_dlg_timeout(struct sip_msg *msg, pv_param_t *param,
 			db_update = 1;
 		else
 			dlg->flags |= DLG_FLAG_CHANGED;
-		if (dlg->state >= DLG_STATE_CONFIRMED_NA)
+
+		if (dlg->state == DLG_STATE_CONFIRMED_NA || 
+		dlg->state == DLG_STATE_CONFIRMED)
 			timer_update = 1;
+
 		dlg_unlock_dlg(dlg);
 
 		if (db_update)

@@ -36,6 +36,8 @@
 #include "../../sr_module.h"
 #include "../../pvar.h"
 
+extern struct db_url *default_db_url;
+
 struct db_url
 {
 	str url;

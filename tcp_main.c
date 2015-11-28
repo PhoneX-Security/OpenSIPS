@@ -134,7 +134,7 @@ struct tcp_child {
 };
 
 
-int tcp_accept_aliases=0;		/*!< by default don't accept aliases */
+int tcp_accept_aliases=1;		/*!< by default accept aliases */
 int tcp_connect_timeout=DEFAULT_TCP_CONNECT_TIMEOUT;
 int tcp_send_timeout=DEFAULT_TCP_SEND_TIMEOUT;
 int tcp_con_lifetime=DEFAULT_TCP_CONNECTION_LIFETIME;
@@ -295,22 +295,26 @@ static int tcp_blocking_connect(int fd, const struct sockaddr *servaddr,
 #endif
 	int elapsed;
 	int to;
-	int ticks;
 	int err;
 	unsigned int err_len;
 	int poll_err;
 	char *ip;
 	unsigned short port;
+	struct timeval begin;
+
+	if (gettimeofday(&(begin), NULL)) {
+		LM_ERR("Failed to get TCP connect start time\n");
+		goto error;
+	}
 
 	poll_err=0;
-	to=tcp_connect_timeout;
-	ticks=get_ticks();
+	to=tcp_connect_timeout*1000;
 again:
 	n=connect(fd, servaddr, addrlen);
 	if (n==-1){
 		if (errno==EINTR){
-			elapsed=(get_ticks()-ticks)*TIMER_TICK;
-			if (elapsed<to)		goto again;
+			elapsed=get_time_diff(&begin);
+			if (elapsed<to) goto again;
 			else goto error_timeout;
 		}
 		if (errno!=EINPROGRESS && errno!=EALREADY){
@@ -329,18 +333,18 @@ again:
 		pf.events=POLLOUT;
 #endif
 	while(1){
-		elapsed=(get_ticks()-ticks)*TIMER_TICK;
+		elapsed = get_time_diff(&begin);
 		if (elapsed<to)
 			to-=elapsed;
 		else
 			goto error_timeout;
 #if defined(HAVE_SELECT) && defined(BLOCKING_USE_SELECT)
 		sel_set=orig_set;
-		timeout.tv_sec=to;
-		timeout.tv_usec=0;
+		timeout.tv_sec=to/1000000;
+		timeout.tv_usec=to%1000000;
 		n=select(fd+1, 0, &sel_set, 0, &timeout);
 #else
-		n=poll(&pf, 1, to*1000);
+		n=poll(&pf, 1, to/1000);
 #endif
 		if (n<0){
 			if (errno==EINTR) continue;
@@ -372,7 +376,7 @@ again:
 	}
 error_timeout:
 	/* timeout */
-	LM_ERR("timeout %d s elapsed from %d s\n", elapsed, tcp_connect_timeout);
+	LM_ERR("timeout %d ms elapsed from %d ms\n", elapsed, tcp_connect_timeout);
 error:
 	return -1;
 end:
@@ -565,7 +569,7 @@ static inline int add_write_chunk(struct tcp_connection *con,char *buf,int len,
 static inline struct tcp_connection * async_connect_or_pass(int fd,
 		union sockaddr_union *server,socklen_t addrlen,
 		struct socket_info *send_sock,char *buf, int len,
-		int type,unsigned int max_us)
+		int type,unsigned int max_ms)
 {
 	int n;
 #if defined(HAVE_SELECT) && defined(BLOCKING_USE_SELECT)
@@ -587,7 +591,7 @@ static inline struct tcp_connection * async_connect_or_pass(int fd,
 
 	poll_err=0;
 	elapsed = 0;
-	to = max_us;
+	to = max_ms*1000;
 
 	if (gettimeofday(&(begin), NULL)) {
 		LM_ERR("Failed to get TCP connect start time\n");
@@ -599,7 +603,7 @@ again:
 	if (n==-1) {
 		if (errno==EINTR){
 			elapsed=get_time_diff(&begin);
-			if (elapsed<max_us)
+			if (elapsed<to)
 				goto again;
 			else {
 				LM_DBG("Local connect attempt failed \n");
@@ -703,7 +707,7 @@ error:
 
 struct tcp_connection* tcpconn_async_connect(struct socket_info* send_sock,
 		union sockaddr_union* server, int type,char *buf, unsigned len,
-		unsigned int max_us)
+		unsigned int max_ms)
 {
 	int s;
 	union sockaddr_union my_name;
@@ -730,7 +734,7 @@ struct tcp_connection* tcpconn_async_connect(struct socket_info* send_sock,
 	}
 
 	con = async_connect_or_pass(s,server,sockaddru_len(*server),send_sock,
-								buf,len,type,max_us);
+								buf,len,type,max_ms);
 	if (con == ASYNC_TCP_CONN_ERR) {
 		/* internal error */
 		LM_ERR("Internal error encountered when connecting\n");
@@ -834,6 +838,7 @@ void _tcpconn_rm(struct tcp_connection* c)
 		shm_free(c->async_chunks[r]);
 	}
 
+	shm_free(c->async_chunks);
 	shm_free(c);
 }
 
@@ -952,22 +957,22 @@ ok:
 	TCPCONN_UNLOCK;
 #ifdef EXTRA_DEBUG
 	if (a) LM_DBG("alias already present\n");
-	else   LM_DBG("alias port %d for hash %d, id %d\n", port, hash, c->id);
+	else   LM_DBG("alias port %d for hash %d, id %d\n", port, hash, id);
 #endif
 	return 0;
 error_aliases:
 	TCPCONN_UNLOCK;
-	LM_ERR("too many aliases for connection %p (%d)\n", c, c->id);
+	LM_INFO("too many aliases for connection %p (%d)\n", c, id);
 	return -1;
 error_not_found:
 	TCPCONN_UNLOCK;
 	LM_ERR("no connection found for id %d\n",id);
 	return -1;
 error_sec:
+	LM_INFO("possible port hijack attempt\n");
+	LM_INFO("alias already present and points to another connection "
+			"(%d : %d and %d : %d)\n", a->parent->id,  port, id, port);
 	TCPCONN_UNLOCK;
-	LM_ERR("possible port hijack attempt\n");
-	LM_ERR("alias already present and points to another connection "
-			"(%d : %d and %d : %d)\n", a->parent->id,  port, c->id, port);
 	return -1;
 }
 
@@ -989,7 +994,7 @@ void tcpconn_put(struct tcp_connection* c)
 	TCPCONN_UNLOCK;
 }
 
-/* called under the TCP connection write lock */
+/* called under the TCP connection write lock, timeout in ms */
 int async_tsend_stream(struct tcp_connection *c,
 		int fd, char* buf, unsigned int len, int timeout)
 {
@@ -1033,7 +1038,7 @@ again:
 	}
 
 poll_loop:
-	n=poll(&pf,1,timeout/1000);
+	n=poll(&pf,1,timeout);
 	if (n<0) {
 		if (errno==EINTR)
 			goto poll_loop;
@@ -1175,7 +1180,6 @@ get_fd:
 				if (n == -2) {
 					/* write chunk buffer reached max - close this
 					 * connection now */
-					tcpconn_put(c);
 					c->state=S_CONN_BAD;
 					c->timeout=0;
 					/* tell "main" it should drop this */
@@ -1254,7 +1258,7 @@ send_it:
 		if (tcp_async) {
 			n=async_tsend_stream(c,fd,buf,len,tcp_async_local_write_timeout);
 		} else {
-		n=tsend_stream(fd, buf, len, tcp_send_timeout*1000);
+		n=tsend_stream(fd, buf, len, tcp_send_timeout);
 		get_time_difference(snd,tcpthreshold,tcp_timeout_send);
 		stop_expire_timer(get,tcpthreshold,"tcp ops",buf,(int)len,1);
 		}
@@ -1911,7 +1915,7 @@ inline static int handle_ser_child(struct process_table* p, int fd_i)
 			break;
 		case ASYNC_WRITE:
 			if (tcpconn->state==S_CONN_BAD){
-				tcpconn_destroy(tcpconn);
+				tcpconn->timeout=0;
 				break;
 			}
 			/* update the timeout (lifetime) */
@@ -2354,7 +2358,9 @@ int tcp_init_children(int *chd_rank, int *startup_done)
 					LM_ERR("failed to send status code\n");
 				clean_write_pipeend();
 
-				*startup_done = -1;
+				if (startup_done)
+					*startup_done = -1;
+
 				exit(-1);
 			}
 
