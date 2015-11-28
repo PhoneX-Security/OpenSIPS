@@ -174,8 +174,7 @@ static inline struct sr_timer* new_sr_timer(char *label, timer_function f,
  * ret: <0 on error
  * Hint: if you need it in a module, register it from mod_init or it
  * won't work otherwise*/
-int
-register_timer(char *label, timer_function f, void* param,
+int register_timer(char *label, timer_function f, void* param,
 													unsigned int interval)
 {
 	struct sr_timer* t;
