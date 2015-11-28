@@ -82,9 +82,9 @@ include Makefile.defs
 #	pua pua_bla pua_mi pua_usrloc pua_xmpp pua_dialoginfo \
 #	ldap h350 identity regex cachedb_memcached cachedb_redis event_rabbitmq \
 #	db_http json python dialplan mi_http
-ifeq ($(TLS),)
-	exclude_modules+= tlsops
-endif
+#ifeq ($(TLS),)
+#	exclude_modules+= tlsops
+#endif
 # always exclude the SVN dir
 override exclude_modules+= .svn $(skip_modules)
 

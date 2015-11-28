@@ -41,6 +41,25 @@ add_definitions(-DVERSION='"1.11.2-tls"')
 add_definitions(-DARCH='"x86_64"')
 add_definitions(-DOS='"linux"')
 
+#modules/msilo/common.h
+#modules/msilo/cacheLogic/logic.hpp
+#modules/msilo/cacheLogic/MessageListElement.cpp
+#modules/msilo/cacheLogic/MessageListElement.hpp
+#modules/msilo/cacheLogic/MessageThreadElement.cpp
+#modules/msilo/cacheLogic/MessageThreadElement.hpp
+#modules/msilo/cacheLogic/MessageThreadManager.cpp
+#modules/msilo/cacheLogic/MessageThreadManager.hpp
+#modules/msilo/cacheLogic/MessageThreadMap.cpp
+#modules/msilo/cacheLogic/MessageThreadMap.hpp
+#modules/msilo/cacheLogic/MessageThreadSender.cpp
+#modules/msilo/cacheLogic/MessageThreadSender.hpp
+#modules/msilo/cacheLogic/MessageThreadWrapper.cpp
+#modules/msilo/cacheLogic/MessageThreadWrapper.h
+#modules/msilo/cacheLogic/SenderJobQueue.cpp
+#modules/msilo/cacheLogic/SenderJobQueue.hpp
+#modules/msilo/cacheLogic/SipsHeapAllocator.hpp
+#modules/msilo/cacheLogic/SipsSHMAllocator.hpp
+
 set(SOURCE_FILES
     aaa/aaa.c
     aaa/aaa.h
@@ -693,24 +712,6 @@ set(SOURCE_FILES
     modules/msilo/msfuncs.c
     modules/msilo/msfuncs.h
     modules/msilo/msilo.c
-     modules/msilo/common.h
-     modules/msilo/cacheLogic/logic.hpp
-     modules/msilo/cacheLogic/MessageListElement.cpp
-     modules/msilo/cacheLogic/MessageListElement.hpp
-     modules/msilo/cacheLogic/MessageThreadElement.cpp
-     modules/msilo/cacheLogic/MessageThreadElement.hpp
-     modules/msilo/cacheLogic/MessageThreadManager.cpp
-     modules/msilo/cacheLogic/MessageThreadManager.hpp
-     modules/msilo/cacheLogic/MessageThreadMap.cpp
-     modules/msilo/cacheLogic/MessageThreadMap.hpp
-     modules/msilo/cacheLogic/MessageThreadSender.cpp
-     modules/msilo/cacheLogic/MessageThreadSender.hpp
-     modules/msilo/cacheLogic/MessageThreadWrapper.cpp
-     modules/msilo/cacheLogic/MessageThreadWrapper.h
-     modules/msilo/cacheLogic/SenderJobQueue.cpp
-     modules/msilo/cacheLogic/SenderJobQueue.hpp
-     modules/msilo/cacheLogic/SipsHeapAllocator.hpp
-     modules/msilo/cacheLogic/SipsSHMAllocator.hpp
     modules/nat_traversal/nat_traversal.c
     modules/nathelper/nathelper.c
     modules/nathelper/sip_pinger.h
@@ -1465,7 +1466,7 @@ set(SOURCE_FILES
     ut.h
     version.h
     xlog.c
-    xlog.h modules/msilo/cacheLogic/logic.cpp modules/msilo/cacheLogic/common.h modules/msilo/cacheLogic/SipsAllocator.hpp modules/msilo/cacheLogic/MessageListElementWrapper.cpp modules/msilo/cacheLogic/MessageListElementWrapper.hpp modules/msilo/cacheLogic/ApiHelper.cpp modules/msilo/cacheLogic/ApiHelper.hpp modules/msilo/cacheLogic/apiDeps.h modules/msilo/msg_retry.c modules/msilo/msg_retry.h modules/msilo/ms_amqp.h modules/msilo/ms_amqp.c modules/msilo/msilo.h.h modules/msilo/msilo.h modules/msilo/ms_amqp.c modules/msilo/ms_amqp.h)
+    xlog.h modules/msilo/msg_retry.c modules/msilo/msg_retry.h modules/msilo/ms_amqp.h modules/msilo/ms_amqp.c modules/msilo/msilo.h modules/msilo/msilo.h modules/msilo/ms_amqp.c modules/msilo/ms_amqp.h)
 
 add_executable(opensips_1_11_2_tls ${SOURCE_FILES})
 target_link_libraries(opensips_1_11_2_tls ${Boost_LIBRARIES})
