@@ -426,8 +426,6 @@ set(SOURCE_FILES
     modules/db_unixodbc/db_unixodbc.h
     modules/db_unixodbc/dbase.c
     modules/db_unixodbc/dbase.h
-    modules/db_unixodbc/list.c
-    modules/db_unixodbc/list.h
     modules/db_unixodbc/res.c
     modules/db_unixodbc/res.h
     modules/db_unixodbc/row.c

@@ -49,6 +49,7 @@ msg_list_el msg_list_el_new(void)
 	mle->next = NULL;
 	mle->prev = NULL;
 	mle->msgid = 0;
+	mle->retry_ctr = 0;
 	mle->flag = MS_MSG_NULL;
 
 	return mle;
@@ -159,22 +160,33 @@ void msg_list_free(msg_list ml)
 /**
  * check if a message is in list
  */
-int msg_list_check_msg(msg_list ml, int mid)
+int msg_list_check_msg(msg_list ml, t_msg_mid mid, int * retry_cnt, int * fl)
 {
 	msg_list_el p0, p1;
 
 	if(!ml || mid==0)
 		goto errorx;
 
-	LM_DBG("checking msgid=%d\n", mid);
+	LM_DBG("checking msgid=%lld\n", (long long) mid);
 
 	lock_get(&ml->sem_sent);
 
 	p0 = p1 = ml->lsent;
 	while(p0)
 	{
-		if(p0->msgid==mid)
+		if(p0->msgid==mid) {
+			if (retry_cnt != NULL)
+			{
+				*retry_cnt = p0->retry_ctr;
+			}
+
+			if (fl != NULL)
+			{
+				*fl = p0->flag;
+			}
+
 			goto exist;
+		}
 		p1 = p0;
 		p0 = p0->next;
 	}
@@ -187,6 +199,16 @@ int msg_list_check_msg(msg_list ml, int mid)
 	}
 	p0->msgid = mid;
 	p0->flag |= MS_MSG_SENT;
+
+	if (retry_cnt != NULL)
+	{
+		*retry_cnt = p0->retry_ctr;
+	}
+
+	if (fl != NULL)
+	{
+		*fl = p0->flag;
+	}
 
 	if(p1)
 	{
@@ -215,7 +237,7 @@ errorx:
 /**
  * set flag for message with mid
  */
-int msg_list_set_flag(msg_list ml, int mid, int fl)
+int msg_list_set_flag(msg_list ml, t_msg_mid mid, int fl)
 {
 	msg_list_el p0;
 
@@ -233,7 +255,7 @@ int msg_list_set_flag(msg_list ml, int mid, int fl)
 		if(p0->msgid==mid)
 		{
 			p0->flag |= fl;
-			LM_DBG("mid:%d fl:%d\n", p0->msgid, fl);
+			LM_DBG("mid:%lld fl:%d\n", (long long)p0->msgid, fl);
 			goto done;
 		}
 		p0 = p0->next;
@@ -251,7 +273,8 @@ errorx:
  */
 int msg_list_check(msg_list ml)
 {
-	msg_list_el p0,p1;
+	msg_list_el p0;
+	msg_list_el p0_next;
 
 	if(!ml)
 		goto errorx;
@@ -265,9 +288,9 @@ int msg_list_check(msg_list ml)
 	p0 = ml->lsent;
 	while(p0)
 	{
-		if(p0->flag & MS_MSG_DONE || p0->flag & MS_MSG_ERRO)
+		if((p0->flag & MS_MSG_DONE) > 0 || (p0->flag & MS_MSG_ERRO) > 0)
 		{
-			LM_DBG("mid:%d got reply\n", p0->msgid);
+			LM_DBG("mid:%lld got reply\n", (long long)p0->msgid);
 			if(p0->prev)
 				(p0->prev)->next = p0->next;
 			else
@@ -278,25 +301,21 @@ int msg_list_check(msg_list ml)
 			if(!ml->nrsent)
 				ml->lsent = NULL;
 
-			p1 = p0->next;
-
 			if(ml->ldone)
 				(ml->ldone)->prev = p0;
+
+			p0_next = p0->next;
 			p0->next = ml->ldone;
 
 			p0->prev = NULL;
 
 			ml->ldone = p0;
 			ml->nrdone++;
-
-			if (!p1)
-				break;
-			else {
-				p0 = p1;
-				continue;
-			}
+		} else {
+			p0_next = p0->next;
 		}
-		p0 = p0->next;
+
+		p0 = p0_next;
 	}
 
 	lock_release(&ml->sem_done);

@@ -25,6 +25,7 @@
 
 #include <time.h>
 #include "../../str.h"
+#include "msilo.h"
 
 #define CT_TYPE		1
 #define CT_CHARSET	2
@@ -49,12 +50,12 @@ int m_apo_escape(char*, int, char*, int);
 int m_extract_content_type(char*, int, content_type_t*, int);
 
 /** build MESSAGE headers */
-int m_build_headers(str *buf, str ctype, str contact, time_t date);
+int m_build_headers(str *buf, str ctype, str contact, time_t date, long dumpId);
 
 /** build MESSAGE body */
 int m_build_body(str *body, time_t date, str msg, time_t sdate);
 
-int ms_extract_time(str *time_str, int *time_val);
+int ms_extract_time(str *time_str, long long *time_val);
 
 #endif
 
